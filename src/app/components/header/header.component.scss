@@ -1,0 +1,30 @@
+.sidenav-container {
+  height       : 100%;
+  // box-shadow: 0 0 1px #27394c;
+}
+
+.sidenav {
+  width        : 200px;
+  box-shadow   : 0 0 0.5px #27394c;
+  // background: #f9f9f9;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+}
+
+.remaining-space {
+  flex: 1 1 auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo span {
+  position : relative;
+  top      : -4px;
+  left     : 5px;
+  color    : #ffffff;
+  font-size: 22px;
+}

@@ -1,6 +1,6 @@
-import { api } from './environment.api'
+import { api } from './environment'
 
 export const environment = {
   production: true,
-  apiAnaliseDB: api.production
+  api: api.production
 };

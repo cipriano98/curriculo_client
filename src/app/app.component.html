@@ -1,3 +1,8 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
-
+<app-header style="position: fixed; z-index: 2; width: 100%;"></app-header>
+<main principal fxLayout="row" fxLayoutAlign="center center">
+  <section style="position: relative; top: 65px; width: 100%; height: 78vh" fxFlex="95%">
+    <router-outlet></router-outlet>
+  </section>
+</main>
+<!-- footer -->
+<!-- <app-footer style="width: 100%;"></app-footer> -->

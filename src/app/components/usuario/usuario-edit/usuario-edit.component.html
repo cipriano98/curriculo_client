@@ -1,0 +1,70 @@
+<div class="container" fxLayout="column" fxFlex="100%" fxLayoutGap="1%">
+  <mat-toolbar color="primary">
+    <span>Usuário</span>
+  </mat-toolbar>
+  <form [formGroup]="usuarioForm" class="container" fx #f="ngForm" novalidate>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="2.5%">
+        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="email" formControlName="email"
+            (change)="verificaEmailExiste($event.target.value)" required />
+          <mat-hint class="hintError">
+            {{getFormEmailError()}}
+          </mat-hint>
+        </mat-form-field>
+
+        <span [hidden]="!id || alterarSenha">
+          <button mat-flat-button (click)="permitirAlterarSenha()" color="primary">
+            <mat-icon>edit</mat-icon>
+            Alterar senha
+          </button>
+        </span>
+
+        <mat-form-field *ngIf="alterarSenha || !id"
+          (change)="campoSenha = $event.target.value; verificaCamposSenhaIguais()" appearance="standard"
+          [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%"
+          fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+          <mat-label *ngIf="!id">Senha</mat-label>
+          <mat-label *ngIf="alterarSenha">Nova senha</mat-label>
+          <input matInput type="password" formControlName="newPassword" required />
+          <mat-hint class="hintError">
+            {{getFormPasswordError()}}
+          </mat-hint>
+          <!-- <mat-error [hidden]="">
+              Senha deve possuir pelo menos 6 caracteres
+          </mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field *ngIf="alterarSenha || !id" appearance="standard" [floatLabel]="true"
+          [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%"
+          fxFlex.xl="24.6%">
+          <mat-label *ngIf="!id">Redigite a senha</mat-label>
+          <mat-label *ngIf="alterarSenha">Redigite a nova senha</mat-label>
+          <input matInput type="password" formControlName="password"
+            (keyup)="campoRedigiteSenha = $event.target.value; verificaCamposSenhaIguais()" required />
+          <mat-error>
+            Digite novamente sua senha
+          </mat-error>
+          <mat-hint *ngIf="!camposSenhaIguais" class="hintError">
+            Os campos não coincidem
+          </mat-hint>
+          <!-- <mat-error [hidden]="">
+                  Senha deve possuir pelo menos 6 caracteres
+          </mat-error> -->
+        </mat-form-field>
+
+      </div>
+    </div>
+  </form>
+  <div mat-dialog-actions dir="rtl">
+    <button [disabled]="desabilitarOnSubimit()" mat-mini-fab (click)="onSubmit()" type="submit" color="primary">
+      <mat-icon>check</mat-icon>
+    </button>
+    <button mat-mini-fab (click)="onNoClick()" fxFlexOffset="10px" color="theme">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <!-- <app-form-debug [form]="usuarioForm"></app-form-debug> -->
+</div>

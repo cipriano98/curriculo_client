@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-// import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-// import { MessagesService } from './messages/messages.service';
+import { MessagesService } from './messages/messages.service';
 
 
 export interface size {
@@ -16,8 +16,8 @@ export interface size {
 export class UtilService {
 
   constructor(
-    // private messageService: MessagesService,
-    // public dialog: MatDialog
+    private messageService: MessagesService,
+    public dialog: MatDialog
   ) { }
 
   log(message: any) {
@@ -39,7 +39,7 @@ export class UtilService {
       this.log(`${operation} failed: ${error}`);
 
       if (error) {
-        // this.messageService.add(error, 10000);
+        this.messageService.add(error, 10000);
       }
 
       // Let the app keep running by returning an empty result.
@@ -76,19 +76,19 @@ export class UtilService {
         this.emitirErrosSubmit(controle);
       }
     });
-    // this.messageService.add('Ajuste os erros no formulário e tente novamente.');
+    this.messageService.add('Ajuste os erros no formulário e tente novamente.');
   }
 
   emitirMensagem(mensagem: string, duration?: number, action?: string) {
-    // return this.messageService.add(mensagem, duration, action);
+    return this.messageService.add(mensagem, duration, action);
   }
 
   openEditModal(componente, id: number, size: size = { width: '99,9%', height: '77%' }): void {
-    // const dialogRef = this.dialog.open(componente, {
-    //   width: size.width,
-    //   height: size.height,
-    //   data: { idEdicao: id }
-    // });
+    const dialogRef = this.dialog.open(componente, {
+      width: size.width,
+      height: size.height,
+      data: { idEdicao: id }
+    });
   }
 
   formatarCpfOuCnpj(cpfOuCnpj) {

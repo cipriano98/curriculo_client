@@ -1,0 +1,18 @@
+::ng-deep .message {
+  color: #fff !important;
+  .mat-simple-snackbar-action {
+    color              : #fafafa !important;
+    border-left        : 2px solid #fff !important;
+  }
+}
+
+::ng-deep .ag-row-hover {
+  /* putting in !important so it overrides the theme's styling as it hovers the row also */
+  background-color: #dfdfff !important;
+}
+
+::ng-deep * {
+  margin : 0;
+  padding: 0;
+  border : 0;
+}

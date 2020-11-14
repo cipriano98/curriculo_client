@@ -2,12 +2,15 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, Htt
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { UtilService } from './shared/utils.service';
+import { environment } from 'src/environments/environment';
 
 environment.production ?
-  console.log('\n\n\nZeta Análise - Sistema de Análise de Dados\n\n\n\n')
-  : console.log("LocalStorage:", JSON.parse(localStorage.getItem('currentUser')));
+  console.log('\n\n\nCurrículo Único\n\n\n\n')
+  : (
+    console.log('Localhost'),
+    console.log("LocalStorage:", JSON.parse(localStorage.getItem('currentUser')))
+  )
 
 @Injectable()
 export class CustomHttpInterceptorService implements HttpInterceptor {

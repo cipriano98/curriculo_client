@@ -1,27 +1,46 @@
 {
   "name": "curriculo_client",
   "version": "0.0.0",
+  "contributors": [
+    {
+      "name": "Natan Cipriano",
+      "email": "natancipriano98@gmail.com"
+    },
+    {
+      "name": "Jonas Couto",
+      "email": "jonas@gmail.com"
+    }
+  ],
+  "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng s --configuration=production",
+    "dev": "ng s --port 3010 -o",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "doc": "compodoc -p tsconfig.json -s -w --language pt-BR --theme stripe -n \"Currículo Único Documentation\" -o --port 3030",
+    "ng-update": "ng update --createCommits --all --force"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~11.0.0-rc.2",
     "@angular/cdk": "^10.2.7",
     "@angular/common": "~11.0.0-rc.2",
     "@angular/compiler": "~11.0.0-rc.2",
-    "@angular/core": "~10.2.2",
+    "@angular/core": "~10.2.3",
+    "@angular/flex-layout": "^10.0.0-beta.32",
     "@angular/forms": "~11.0.0-rc.2",
     "@angular/http": "^7.2.16",
     "@angular/material": "^10.2.7",
     "@angular/platform-browser": "~11.0.0-rc.2",
     "@angular/platform-browser-dynamic": "~11.0.0-rc.2",
     "@angular/router": "~11.0.0-rc.2",
+    "ag-grid-angular": "^24.1.0",
+    "ag-grid-community": "^24.1.0",
+    "core-js": "^3.7.0",
+    "hammerjs": "^2.0.8",
+    "moment": "^2.29.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -31,9 +50,10 @@
     "@angular/cli": "~10.2.0",
     "@angular/compiler-cli": "~11.0.0-rc.2",
     "@angular/language-service": "~11.0.0-rc.2",
-    "@types/node": "^12.11.1",
+    "@compodoc/compodoc": "^1.1.11",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",

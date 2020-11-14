@@ -1,0 +1,30 @@
+<div class="signin-content">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <img src="../../assets/images/zeta.jpg" alt="logo.zeta">
+
+        <mat-form-field class="full-width-input">
+          <input matInput placeholder="Email" formControlName="email" autocomplete="username" required>
+          <mat-error *ngIf="isFieldInvalid('email')">
+            Por favor informe seu email
+          </mat-error>
+        </mat-form-field>
+
+        <!-- autocomplete="current-password"> -->
+
+        <mat-form-field class="full-width-input">
+          <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Password" formControlName="secret" required>
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="isFieldInvalid('secret')">
+            Por favor informe sua senha
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary">Login</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

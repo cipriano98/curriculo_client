@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-// import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -19,29 +19,24 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    // private authService: AuthService
-  ) { }
+    private authService: AuthService) { }
 
-  imageZeta: any = 'assets/images/zeta.svg';
   innerWidth: any;
 
   isLoggedIn$: Observable<boolean>;
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    // this.isLoggedIn$ = this.authService.isLoggedIn;
+    this.isLoggedIn$ = this.authService.isLoggedIn;
   }
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
   }
 
-  onLogout() {
-    // this.authService.logout();
-  }
-
-  close() {
-
+  logout() {
+    this.authService.logout();
   }
 
 }

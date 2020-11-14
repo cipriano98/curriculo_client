@@ -26,14 +26,14 @@
       </button>
       <span class="logo">
         <a routerLink="/">
-          <img src="assets/images/zeta.svg" height="22" />
-          <span *ngIf="innerWidth >= 660">Análise</span>
-          <span [hidden]="innerWidth >= 530">Análise</span>
+          <img src="assets/images/logo.png" height="22" />
+          <!-- <span *ngIf="innerWidth >= 660">Currículo Único</span> -->
+          <!-- <span [hidden]="innerWidth >= 530">Currículo Único</span> -->
         </a>
       </span>
 
       <span class="remaining-space"></span>
-      <span *ngIf="innerWidth >= 530">Sistema de Análise de Dados</span>
+      <span *ngIf="innerWidth >= 530">Com um único cadastro seu currículo está em todas as plataformas</span>
       <span class="remaining-space"></span>
       <button mat-button routerLink="login" *ngIf="!isLoggedIn$">Login</button>
       <button mat-button *ngIf="isLoggedIn$">Perfil</button>

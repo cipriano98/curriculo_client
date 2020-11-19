@@ -1,40 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { OrganizacaoService } from '../organizacao.service';
-import { GridOptions } from 'ag-grid-community';
+import { Component } from '@angular/core';
+import { CellClassParams, CellRange, ColDef, GetContextMenuItemsParams, GridOptions, MenuItemDef } from 'ag-grid-community';
 import { BotoesGridComponent } from 'src/app/shared/botoes-grid/botoes-grid.component';
 import { UtilService } from 'src/app/shared/utils.service';
+
 import { OrganizacaoEditComponent } from '../organizacao-edit/organizacao-edit.component';
-import { Organizacao } from '../model/Organizacao';
-import { ActionsList, ActionsListTypes } from 'src/app/shared/constants/actionsList';
-import * as moment from 'moment';
+import { OrganizacaoService } from '../organizacao.service';
+
+import 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-organizacao-list',
   templateUrl: './organizacao-list.component.html',
   styleUrls: ['./organizacao-list.component.scss']
 })
-export class OrganizacaoListComponent implements OnInit {
+export class OrganizacaoListComponent {
 
-  inputActions: ActionsList[];
-
-  private columnDefs;
+  private columnDefs: ColDef[];
   public gridOptions: GridOptions;
-  getRowNodeId;
-  acao = {
-    width: 120
-  }
 
   constructor(
-    private organizacaoService: OrganizacaoService,
-    private utils: UtilService
+    private service?: OrganizacaoService,
+    private utils?: UtilService
   ) {
-
-    this.inputActions = [
-      { acao: ActionsListTypes.ALTERAR },
-      { acao: ActionsListTypes.EXCLUIR },
-      { acao: ActionsListTypes.COPIARUUID },
-    ];
-
 
     this.columnDefs = [
       {
@@ -42,140 +29,214 @@ export class OrganizacaoListComponent implements OnInit {
         field: 'value',
         cellRenderer: 'BotoesGridComponent',
         colId: 'params',
-        width: this.acao.width,
-        suppressNavigable: true,
-        suppressSorting: true,
-        suppressMenu: true,
-        suppressFilter: true,
-        maxWidth: this.acao.width,
-        minWidth: this.acao.width,
-      },
-      {
-        headerName: 'id',
-        width: 70,
-        field: 'id',
-        enableSorting: true,
-        enableColResize: true,
+        maxWidth: 80,
+        minWidth: 80,
+        sortable: false,
+        filter: false,
+        resizable: false,
       },
       {
         headerName: 'Nome',
         field: 'nome',
-        enableSorting: true,
-        enableColResize: true,
+        tooltipField: 'nome',
       },
       {
-        headerName: 'Registro Federal',
+        headerName: 'CPF',
         field: 'registroFederal',
         cellRenderer: param => {
           if (param.value && (param.value.length === 11 || param.value.length === 14))
             return this.utils.formatarCpfOuCnpj(param.value)
           return param.value
-        }
-      },
-      {
-        headerName: 'Ativo',
-        field: 'ativo',
-        cellRenderer: param => {
-          const icone = cor => {
-            return `<mat-icon matTooltip="${param.value}" matSuffix style="color: ${cor}">◉</mat-icon>`
-          }
-          if (param.value)
-            return icone('#47ad0b');
-          return icone('#e91f1f');
-          // return `<i class="fa fa-sort-alpha-up"/>`;
         },
-        cellStyle: {
-          textAlign: 'center'
-        },
-        width: 70,
+        filter: false,
       },
       {
         headerName: 'Versão',
         field: 'versaoSistema',
-        cellRenderer: param => {
+        cellRenderer: (param: CellClassParams) => {
           if (param.value == null || param.value == 0) {
             return `<span style="color: #e91f1f">Permitir acesso para <b>ZWARelease</b></span>`;
           }
           return param.value;
         },
-        width: 90,
       },
-      {
-        headerName: 'Ultima Sincronização',
-        field: 'sincronizacaoDate',
-        tooltipField: 'sincronizacaoDate',
-        cellRenderer: param => {
-          if (param.value) {
-            return moment(param.value).locale(navigator.language || 'en')
-              .add(param.value, 'h').calendar()
-          }
-          return `<span style="color: #e91f1f">Sincronização pendente</span>`;
-        },
-        width: 170,
-      }
     ];
 
 
     this.gridOptions = <GridOptions>{
       defaultColDef: {
+        // maxWidth: 400,
         filter: 'agTextColumnFilter',
-        enableRowGroup: true,
-        maxWidth: 400,
+        enableCellChangeFlash: true,
+        resizable: true,
+        sortable: true,
+        flex: 1,
+        autoHeight: true,
+        // floatingFilter: false
       },
-      id: 'myGrid',
+      immutableData: true,
       editType: 'fullRow',
       multiSortKey: 'ctrl',
+      enableFillHandle: true,
+      fillHandleDirection: 'x',
       columnDefs: this.columnDefs,
-      groupSelectsChildren: true,
       floatingFilter: true,
       animateRows: true,
-      enableRangeSelection: true,
-      groupMultiAutoColumn: true,
-      enableSorting: true,
-      enableFilter: true,
-      enableColResize: true,
+      enableRangeHandle: true,
       context: {
         componentParent: this
       },
       frameworkComponents: {
-        'BotoesGridComponent': BotoesGridComponent
-      },
-      onRowDoubleClicked: row => {
-        this.edit(row.data)
+        BotoesGridComponent
       },
       suppressCellSelection: true,
       pagination: true,
       paginationPageSize: 50,
+      sideBar: true,
+      rowDragMove: true,
+      // enableRangeSelection: true,
+      debounceVerticalScrollbar: true,
+      onRowDoubleClicked: row => {
+        this.edit(row.data.id)
+      },
+      getContextMenuItems: this.getContextMenuItems,
+      getRowNodeId: this.getRowNodeId
     };
-    this.getRowNodeId = data => data.id;
 
   }
 
-  ngOnInit() {
+  getRowNodeId(data: CellRange) {
+    return data.id
   }
 
-  onGridReady(params) {
-    this.organizacaoService.getBase().subscribe(() => { });
-    this.organizacaoService.listaInicial$.subscribe(
-      organizacoes => {
-        params.api.setRowData(organizacoes);
-        this.organizacaoService.listaUpdates$.subscribe(newRowData => {
-          params.api.updateRowData({ update: newRowData });
-        });
+  onGridReady(params: GridOptions) {
+    this.service.getBase().subscribe(() => { });
+    this.service.listaInicial$.subscribe(
+      entities => {
+        params.api.setRowData(entities)
       });
   }
-
-
-  public insert() {
-    this.utils.openEditModal(OrganizacaoEditComponent, 0);
+  
+  getContextMenuItems(params: GetContextMenuItemsParams) {
+    const copiarUUID: MenuItemDef = {
+      name: 'Copiar UUID',
+      action: () => {
+        alert(`ID: ${params.node.data.id}, UUID: ${params.node.data.uuid}`);
+      },
+      cssClasses: ['redFont', 'bold'],
+    }
+    const alterar = {
+      name: 'Alterar',
+      action: () => {
+        const data = params.node.data
+        // this.edit(data.id)
+        console.dir(data.id)
+      },
+      tooltip: 'Alterar',
+      icon: '<i class="material-icons">visibility</i>'
+    }
+    const deletar: MenuItemDef = {
+      name: 'Excluir',
+      action: () => this.delete(params.node.data),
+      tooltip: 'Excluir',
+      icon: '<i class="material-icons">delete_outline</i>'
+    }
+    return [
+      copiarUUID,
+      alterar,
+      deletar,
+      {
+        name: 'Always Disabled',
+        disabled: true,
+        tooltip:
+          'Very long tooltip, did I mention that I am very long, well I am! Long!  Very Long!',
+      },
+      {
+        name: 'Country',
+        subMenu: [/* 
+          {
+            name: 'Ireland',
+            action: () => {
+              console.log('Ireland was pressed');
+            },
+            // icon: createFlagImg('ie'),
+          },
+          {
+            name: 'UK',
+            action: () => {
+              console.log('UK was pressed');
+            },
+            icon: createFlagImg('gb'),
+          },
+          {
+            name: 'France',
+            action: () => {
+              console.log('France was pressed');
+            },
+            icon: createFlagImg('fr'),
+          },
+         */],
+      },
+      {
+        name: 'Person',
+        subMenu: [
+          {
+            name: 'Sean',
+            action: () => {
+              console.log('Sean was pressed');
+            },
+          },
+          {
+            name: 'John',
+            action: () => {
+              console.log('John was pressed');
+            },
+          },
+          {
+            name: 'Alberto',
+            action: () => {
+              console.log('Alberto was pressed');
+            },
+          },
+          {
+            name: 'Tony',
+            action: () => {
+              console.log('Tony was pressed');
+            },
+          },
+          {
+            name: 'Andrew',
+            action: () => {
+              console.log('Andrew was pressed');
+            },
+          },
+          {
+            name: 'Kev',
+            action: () => {
+              console.log('Kev was pressed');
+            },
+          },
+          {
+            name: 'Will',
+            action: () => {
+              console.log('Will was pressed');
+            },
+          },
+        ],
+      },
+      'separator',
+      'copy',
+      'separator',
+      'chartRange',
+    ];
   }
 
-  public edit(data) {
-    this.utils.openEditModal(OrganizacaoEditComponent, data.id);
+  public edit(id) {
+    this.utils.openEditModal(OrganizacaoEditComponent, id);
   }
 
-  delete(organizacao: Organizacao): void {
-    this.organizacaoService.deleteBase(organizacao).subscribe(() => { });
+  delete(entity): void {
+    this.service.deleteBase(entity).subscribe(() => { });
   }
 
 }

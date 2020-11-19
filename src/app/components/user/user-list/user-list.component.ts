@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { UsuarioService } from '../usuario.service';
+import { UserService } from '../user.service';
 import { GridOptions } from 'ag-grid-community';
 import { BotoesGridComponent } from 'src/app/shared/botoes-grid/botoes-grid.component';
 import { UtilService } from 'src/app/shared/utils.service';
-import { Usuario } from '../Usuario';
-import { UsuarioEditComponent } from '../usuario-edit/usuario-edit.component';
+import { User } from '../user';
+import { UserEditComponent } from '../user-edit/user-edit.component';
 
 
 
 @Component({
-  selector: 'app-usuario-list',
-  templateUrl: './usuario-list.component.html',
-  styleUrls: ['./usuario-list.component.scss']
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.scss']
 })
-export class UsuarioListComponent implements OnInit {
+export class UserListComponent implements OnInit {
 
   private columnDefs;
   public gridOptions: GridOptions;
   getRowNodeId;
 
   constructor(
-    private usuarioService: UsuarioService,
+    private userService: UserService,
     private utils: UtilService,
     public dialog: MatDialog
   ) {
@@ -55,7 +55,11 @@ export class UsuarioListComponent implements OnInit {
         enableRowGroup: true,
       }
     ];
+
     this.gridOptions = <GridOptions>{
+      defaultColDef: {
+        maxWidth: 400,
+      },
       id: 'myGrid',
       editType: 'fullRow',
       multiSortKey: 'ctrl',
@@ -72,8 +76,14 @@ export class UsuarioListComponent implements OnInit {
         componentParent: this
       },
       frameworkComponents: {
-        'BotoesGridComponent': BotoesGridComponent
-      }
+        BotoesGridComponent
+      },
+      onRowDoubleClicked: row => {
+        this.edit(row.data.id)
+      },
+      suppressCellSelection: true,
+      pagination: true,
+      paginationPageSize: 50,
     };
     this.getRowNodeId = data => data.id;
 
@@ -84,27 +94,23 @@ export class UsuarioListComponent implements OnInit {
 
 
   onGridReady(params) {
-    this.usuarioService.getBase().subscribe(fases => {
+    this.userService.getBase().subscribe(fases => {
     });
-    this.usuarioService.listaInicial$.subscribe(
+    this.userService.listaInicial$.subscribe(
       fases => {
         params.api.setRowData(fases);
-        this.usuarioService.listaUpdates$.subscribe(newRowData => {
+        this.userService.listaUpdates$.subscribe(newRowData => {
           params.api.updateRowData({ update: newRowData });
         });
       });
   }
 
-  public insert() {
-    this.utils.openEditModal(UsuarioEditComponent, 0);
+  edit(id) {
+    this.utils.openEditModal(UserEditComponent, id);
   }
 
-  public edit(data) {
-    this.utils.openEditModal(UsuarioEditComponent, data.id);
-  }
-
-  delete(usuario: Usuario): void {
-    this.usuarioService.deleteBase(usuario).subscribe(() => { });
+  delete(user): void {
+    this.userService.deleteBase(user).subscribe(() => { });
   }
 
 }

@@ -1,20 +1,20 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { Usuario } from '../Usuario';
-import { UsuarioService } from '../usuario.service';
+import { User } from '../user';
+import { UserService } from '../user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UtilService } from 'src/app/shared/utils.service';
 
 
 @Component({
-  selector: 'app-usuario-edit',
-  templateUrl: './usuario-edit.component.html',
-  styleUrls: ['./usuario-edit.component.scss']
+  selector: 'app-user-edit',
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit.component.scss']
 })
-export class UsuarioEditComponent implements OnInit {
+export class UserEditComponent implements OnInit {
 
-  usuario: Usuario;
+  usuario: User;
   id: number;
   emailExiste: boolean = false;
   usuarioForm: FormGroup;
@@ -27,16 +27,16 @@ export class UsuarioEditComponent implements OnInit {
   tipoSincronizacao: boolean;
 
   constructor(
-    public dialogRef: MatDialogRef<UsuarioEditComponent>,
+    public dialogRef: MatDialogRef<UserEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private usuarioService: UsuarioService,
+    private usuarioService: UserService,
     private fb: FormBuilder,
     private utils: UtilService,
   ) { }
 
   ngOnInit() {
     this.id = this.data.idEdicao;
-    this.usuario = new Usuario();
+    this.usuario = new User();
     this.resetFormulario();
 
     if (this.id !== 0) {
@@ -48,7 +48,7 @@ export class UsuarioEditComponent implements OnInit {
     }
   }
 
-  atribuirDados(usuario: Usuario) {
+  atribuirDados(usuario: User) {
     this.usuario = usuario;
     this.resetFormulario();
     this.usuarioForm.patchValue(this.usuario);

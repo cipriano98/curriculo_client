@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+
+import { UtilService } from 'src/app/shared/utils.service'
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  fulano: string
+  constructor(
+    private readonly utils: UtilService
+  ) { }
 
   ngOnInit() {
+    this.fulano = String(this.utils.getSessao('email')) || 'Fulano'
   }
 
 }

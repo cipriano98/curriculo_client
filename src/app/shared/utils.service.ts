@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
-import { MessagesService } from './messages/messages.service';
+import { Auth } from '../auth/auth';
 
+import { MessagesService } from './messages/messages.service';
 
 export interface size {
   width: string;
@@ -19,6 +20,17 @@ export class UtilService {
     private messageService: MessagesService,
     public dialog: MatDialog
   ) { }
+
+  public getSessao(atribute?: string): Auth | string {
+    const currentUser = localStorage.getItem('currentUser')
+    if(atribute && currentUser) {
+      return JSON.parse(currentUser)[atribute]
+    }
+    if (currentUser) {
+      return JSON.parse(currentUser)
+    }
+    return ''
+  }
 
   log(message: any) {
     console.log(message);

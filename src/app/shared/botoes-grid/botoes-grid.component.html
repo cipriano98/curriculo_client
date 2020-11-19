@@ -1,15 +1,6 @@
-<button *ngIf="alterar" class="material-icons md-16" matTooltip="Editar"
-  [disabled]="disabled" (click)="edit()">edit</button>
+<button *ngIf="alterar" class="material-icons md-16" matTooltip="Editar" (click)="edit()">edit</button>
 
-<button *ngIf="excluir" class="material-icons md-16" matTooltip="Excluir"
-  [disabled]="disabled" (click)="delete()">delete_forever</button>
+<button *ngIf="excluir" class="material-icons md-16" matTooltip="Excluir" (click)="delete()">delete_forever</button>
 
-<button *ngIf="carrinho" class="material-icons md-16" matTooltip="Adicionar ao Carrinho"
-  (click)="addCart()">shopping_cart</button>
-
-<button *ngIf="copiarUUID" class="material-icons md-16" matTooltip="Copiar UUID"
-  (click)="copyUuid()">file_copy</button>
-
-<button *ngIf="sincronizar" class="material-icons md-16" matTooltip="Iniciar Sincronização"
-  [disabled]="disabled" (click)="sincronizarOrganizacao()">
-  sync</button>
+<!-- <button *ngIf="copiarUUID" class="material-icons md-16" matTooltip="Copiar UUID"
+  (click)="copyUuid()">file_copy</button> -->

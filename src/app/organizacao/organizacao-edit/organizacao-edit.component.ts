@@ -115,7 +115,7 @@ export class OrganizacaoEditComponent implements OnInit {
             this.spinnerLoadingApiClarion = false
             return this.apiClarionIsUp = true
           }
-          this.utils.emitirMensagem(this.apiClarionIsDown = `Servidor ${this.nomeOrganizacao} fora do ar`)
+          this.utils.sendMessage(this.apiClarionIsDown = `Servidor ${this.nomeOrganizacao} fora do ar`)
           this.spinnerLoadingApiClarion = false
           return this.apiClarionIsUp = false
         }
@@ -163,7 +163,7 @@ export class OrganizacaoEditComponent implements OnInit {
     this.salvarOrganizacao().then(organizacaoSalva => {
 
       if (!this.organizacaoForm.controls['ativo'].value) {
-        this.utils.emitirMensagem('Não é permitido sincronizar uma organização inativa')
+        this.utils.sendMessage('Não é permitido sincronizar uma organização inativa')
         // ! this.onNoClick()
       }
       else if (!this.loading) {
@@ -181,7 +181,7 @@ export class OrganizacaoEditComponent implements OnInit {
             this.loading = false;
           }, err => {
             this.loading = false;
-            this.utils.emitirMensagem(`Erro ao sincronizar ${organizacaoSalva.nome.toUpperCase()} Erro: ${err.message || err}`)
+            this.utils.sendMessage(`Erro ao sincronizar ${organizacaoSalva.nome.toUpperCase()} Erro: ${err.message || err}`)
           });
       }
     })

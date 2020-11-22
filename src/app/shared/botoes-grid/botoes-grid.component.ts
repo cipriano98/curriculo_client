@@ -2,7 +2,6 @@ import { Component } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ICellRendererAngularComp } from 'ag-grid-angular'
 
-import { ActionsList, ActionsListConstantes } from './constants/actionsList'
 import { MessagesService } from '../messages/messages.service'
 import { UtilService } from '../utils.service'
 
@@ -20,46 +19,34 @@ export class BotoesGridComponent implements ICellRendererAngularComp {
   ) { }
 
   private params: any
-  private inputActions: ActionsList[]
-  private acoesType: ActionsListConstantes = new ActionsListConstantes()
-  excluir: boolean
-  alterar: boolean
+  excluir: boolean = false
+  alterar: boolean = false
 
   agInit(params: any): void {
     this.params = params
-    this.inputActions = this.params.context.componentParent.inputActions ? this.params.context.componentParent.inputActions : []
-
-    if (this.params.context.componentParent.inputActions) {
-      this.alterar = this.inputActions.some(opc => {
-        return opc.acao == this.acoesType.alterar
-      });
-      this.excluir = this.inputActions.some(opc => {
-        return opc.acao == this.acoesType.excluir
-      });
-    } else {
-      this.excluir = true
-      this.alterar = true
-    }
+    console.dir(params);
+    this.excluir = true
+    this.alterar = true
   }
 
   public edit() {
-    this.params.context.componentParent.edit(this.params.data);
+    this.params.context.componentParent.edit(this.params.data.id);
   }
 
   public delete() {
-    let deletarPermanentemente: boolean = true;
+    let permanentlyDelete: boolean = true;
 
     const duration: number = 5000
-    const deletar: string = this.params.data.preferencialname || this.params.data.nome
+    const deletar: string = this.params.data.preferencialname || this.params.data.name
     const snackBarRef = this.messageService.add(`${deletar} será deletado(a) em ${duration / 1000}s`, duration, 'Cancelar')
 
     snackBarRef.onAction().subscribe(() => {
-      deletarPermanentemente = false
+      permanentlyDelete = false
       this.messageService.add('Cancelado', 2500, 'Ufa!')
     });
 
     setTimeout(() => {
-      if (deletarPermanentemente) return this.params.context.componentParent.delete(this.params.data);
+      if (permanentlyDelete) return this.params.context.componentParent.delete(this.params.data.id);
     }, duration + 200);
   }
 
@@ -72,7 +59,7 @@ export class BotoesGridComponent implements ICellRendererAngularComp {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    this.utils.emitirMensagem(`UUID ${this.params.data.nome} copiado para a área de transferência`)
+    this.utils.sendMessage(`UUID ${this.params.data.preferencialname || this.params.data.name} copiado para a área de transferência`)
   }
 
   refresh(): boolean {

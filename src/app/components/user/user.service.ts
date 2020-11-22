@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { api, environment } from 'src/environments/environment';
 
 import { UtilService } from '../../shared/utils.service';
 import { User } from './user';
@@ -22,7 +22,7 @@ export class UserService {
     private utils: UtilService
   ) { }
 
-  private api = environment.curriculumApi;
+  private api = api.production;
 
   public listaInicial: User[] = [];
   public listaUpdates: User[] = [];
@@ -51,10 +51,11 @@ export class UserService {
     this.listaUpdatesSource.next(this.listaUpdates);
   }
 
-  getBase(): Observable<User[]> {
-    return this.http.get<User[]>(this.api + '/user')
+  getBase(): Observable<any[]> {
+    return this.http.get<any[]>(this.api + '/user')
       .pipe(
         tap(user => {
+          console.dir(user)
           this.listaInicial = user;
           this.listaInicialSource.next(this.listaInicial);
           this.utils.log(`Loaded users`);
@@ -63,8 +64,7 @@ export class UserService {
       );
   }
 
-  deleteBase(user: User | number): Observable<User> {
-    const id = typeof user === 'number' ? user : user.id;
+  deleteBase(id: number): Observable<User> {
     const url = `${this.api + '/user'}/${id}`;
     return this.http.delete<User>(url, httpOptions).pipe(
       tap(user => {
@@ -78,7 +78,7 @@ export class UserService {
   getBasePorId(id: number): Observable<User> {
     const url = `${this.api + '/user'}/${id}`;
     return this.http.get<User>(url).pipe(
-      tap(fas => this.utils.log(`User found`)),
+      tap(user => this.utils.log(`User found`)),
       catchError(this.utils.handleError<User>(`getBasePorId id=${id}`))
     );
   }
@@ -87,8 +87,8 @@ export class UserService {
     const url = `${this.api + '/user'}/email/${email}`;
     return this.http.get<User>(url).pipe(
       tap(
-        fas => {
-          if (fas.email !== null)
+        user => {
+          if (user.email !== null)
             this.utils.log('Este email já existe em nossa base de dados')
           else
             this.utils.log(`Este email não existe em nossa base de dados`)

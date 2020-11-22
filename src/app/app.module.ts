@@ -14,14 +14,14 @@ import { HomeComponent } from './components/home/home.component'
 import { LoginComponent } from './components/login/login.component'
 import { UserEditComponent } from './components/user/user-edit/user-edit.component'
 import { UserListComponent } from './components/user/user-list/user-list.component'
-import { DashComponent } from './dash/dash.component'
 import { MaterialModule } from './material/material.module'
 import { CustomHttpInterceptorService } from './noop-interceptor'
 import { OrganizacaoEditComponent } from './organizacao/organizacao-edit/organizacao-edit.component'
 import { OrganizacaoListComponent } from './organizacao/organizacao-list/organizacao-list.component'
 import { OrganizacaoService } from './organizacao/organizacao.service'
 import { BotoesGridComponent } from './shared/botoes-grid/botoes-grid.component'
-import { MessagesService } from './shared/messages/messages.service'
+import { MessagesService } from './shared/messages/messages.service';
+import { GridComponent } from './grid/grid.component'
 
 @NgModule({
   declarations: [
@@ -31,10 +31,10 @@ import { MessagesService } from './shared/messages/messages.service'
     BotoesGridComponent,
     HomeComponent,
     LoginComponent,
-    DashComponent,
     UserListComponent,
     UserEditComponent,
     FooterComponent,
+    GridComponent,
   ],
   imports: [
     BrowserModule,

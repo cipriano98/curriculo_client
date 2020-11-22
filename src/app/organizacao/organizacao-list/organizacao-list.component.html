@@ -1,17 +1,3 @@
-<div style="height: 100%">
-
-  <mat-toolbar style="background-color:transparent">
-
-    <h1>Agency</h1>
-    <span class="toll-spacer"></span>
-    <button mat-mini-fab color="primary">
-      <mat-icon (click)="edit(0)">add</mat-icon>
-    </button>
-
-  </mat-toolbar>
-
-  <ag-grid-angular #agGrid style="height: 100%" class="ag-theme-balham" [gridOptions]="gridOptions"
-     (gridReady)="onGridReady($event)">
-  </ag-grid-angular>
-
-</div>
+<section style="height: 100%;">
+  <app-grid [entity]="entity" [entityEdit]="entityEdit" [service]="service" [columns]="columns"></app-grid>
+</section>

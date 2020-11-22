@@ -91,11 +91,11 @@ export class UtilService {
     this.messageService.add('Ajuste os erros no formulário e tente novamente.');
   }
 
-  emitirMensagem(mensagem: string, duration?: number, action?: string) {
+  sendMessage(mensagem: string, duration?: number, action?: string) {
     return this.messageService.add(mensagem, duration, action);
   }
 
-  openEditModal(componente, id: number, size: size = { width: '99,9%', height: '77%' }): void {
+  openEditModal(componente: any, id: number, size: size = { width: '99,9%', height: '77%' }): void {
     const dialogRef = this.dialog.open(componente, {
       width: size.width,
       height: size.height,

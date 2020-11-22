@@ -30,10 +30,10 @@ export class CustomHttpInterceptorService implements HttpInterceptor {
         let mensagem = errorResponse.error.message || errorResponse.message
         if (errorResponse.url) {
           if (errorResponse.url.indexOf('/api/v1/usuario/signin')) {
-            this.utils.emitirMensagem(mensagem, 5000)
+            this.utils.sendMessage(mensagem, 5000)
           }
           else if (errorResponse.url.indexOf('/api/v1/user/signin')) {
-            this.utils.emitirMensagem(mensagem, 5000)
+            this.utils.sendMessage(mensagem, 5000)
           }
         }
         this.utils.handleError(mensagem)

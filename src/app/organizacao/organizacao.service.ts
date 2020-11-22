@@ -117,7 +117,7 @@ export class OrganizacaoService {
   sincronizarDados(organizacao: Organizacao, completa: boolean): Observable<any> {
     if (organizacao.id) {
       if (organizacao.sincronizando) {
-        this.utils.emitirMensagem(`Sincronização de ${organizacao.nome.toUpperCase()} já está em andamento`, 10000)
+        this.utils.sendMessage(`Sincronização de ${organizacao.nome.toUpperCase()} já está em andamento`, 10000)
         return;
       }
       let url = '/organizacao/sincronizar';
@@ -128,7 +128,7 @@ export class OrganizacaoService {
         ${organizacao.nome.toUpperCase()}, após seu término a data da última sincronização será atualizada.
         Consulte a organização mais tarde e verifique.`;
 
-      this.utils.emitirMensagem(mensagem, 10000)
+      this.utils.sendMessage(mensagem, 10000)
       return this.http.post<Organizacao>(this.api + url, organizacao, httpOptions)
         .pipe(
           map(org => {
@@ -136,7 +136,7 @@ export class OrganizacaoService {
               if (org.versaoSistema != organizacao.versaoSistema) this.getBase().subscribe(() => { })
               mensagem = `${organizacao.nome.toUpperCase()} → Sincronização completa!`
               console.log(mensagem)
-              this.utils.emitirMensagem(mensagem, 5000)
+              this.utils.sendMessage(mensagem, 5000)
               return org
             }
             return null
@@ -144,7 +144,7 @@ export class OrganizacaoService {
           catchError(this.utils.handleError<{}>(`Erro ao sincronizar  ${organizacao.nome.toUpperCase()}`))
         );
     } else {
-      this.utils.emitirMensagem('A organização precisa ser salva para poder ser sincronizada!')
+      this.utils.sendMessage('A organização precisa ser salva para poder ser sincronizada!')
     }
   }
 

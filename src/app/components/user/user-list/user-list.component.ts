@@ -1,28 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
-import { UserService } from '../user.service';
-import { GridOptions } from 'ag-grid-community';
+import { CellRange, GridOptions } from 'ag-grid-community';
 import { BotoesGridComponent } from 'src/app/shared/botoes-grid/botoes-grid.component';
 import { UtilService } from 'src/app/shared/utils.service';
-import { User } from '../user';
+
 import { UserEditComponent } from '../user-edit/user-edit.component';
-
-
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent {
 
   private columnDefs;
   public gridOptions: GridOptions;
-  getRowNodeId;
 
   constructor(
-    private userService: UserService,
+    private service: UserService,
     private utils: UtilService,
     public dialog: MatDialog
   ) {
@@ -30,76 +26,77 @@ export class UserListComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Ação',
-        tooltipField: 'Ação',
         field: 'value',
         cellRenderer: 'BotoesGridComponent',
         colId: 'params',
-        width: 180,
-        suppressNavigable: true,
-        suppressSorting: true,
-        suppressMenu: true,
-        suppressFilter: true
+        maxWidth: 80,
+        minWidth: 80,
+        sortable: false,
+        filter: false,
+        resizable: false,
       },
-      {
-        headerName: 'Código',
-        tooltipField: 'Código',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-        enableRowGroup: true,
-      },
-      {
-        headerName: 'Email',
-        tooltipField: 'Email',
-        field: 'email',
-        filter: 'agTextColumnFilter',
-        enableRowGroup: true,
-      }
+      { headerName: '#', field: 'id', maxWidth: 85, minWidth: 85, },
+      { headerName: 'Email', field: 'email', },
+      { headerName: 'Fullname', field: 'fullname', },
+      { headerName: 'Gender', field: 'gender', },
+      { headerName: 'Nickname', field: 'nickname', },
+      { headerName: 'Preferencialname', field: 'preferencialname', },
     ];
 
     this.gridOptions = <GridOptions>{
       defaultColDef: {
+        enableCellChangeFlash: true,
+        filter: 'agTextColumnFilter',
+        resizable: true,
+        sortable: true,
+        flex: 1,
+        autoHeight: true,
         maxWidth: 400,
+        // floatingFilter: false
       },
-      id: 'myGrid',
+      columnDefs: this.columnDefs,
+      immutableData: true,
       editType: 'fullRow',
       multiSortKey: 'ctrl',
-      columnDefs: this.columnDefs,
-      groupSelectsChildren: true,
       floatingFilter: true,
+      enableFillHandle: true,
+      fillHandleDirection: 'x',
       animateRows: true,
-      enableRangeSelection: true,
-      groupMultiAutoColumn: true,
-      enableSorting: true,
-      enableFilter: true,
-      enableColResize: true,
+      enableRangeHandle: true,
       context: {
         componentParent: this
       },
       frameworkComponents: {
         BotoesGridComponent
       },
-      onRowDoubleClicked: row => {
-        this.edit(row.data.id)
-      },
       suppressCellSelection: true,
       pagination: true,
       paginationPageSize: 50,
+      sideBar: true,
+      rowDragMove: true,
+      // enableRangeSelection: true,
+      debounceVerticalScrollbar: true,
+      onRowDoubleClicked: row => {
+        this.edit(row.data.id)
+      },
+      // getContextMenuItems: this.getContextMenuItems,
+      getRowNodeId: this.getRowNodeId
     };
-    this.getRowNodeId = data => data.id;
+    
 
   }
 
-  ngOnInit() {
+getRowNodeId(data: CellRange) {
+    return data.id
   }
 
 
   onGridReady(params) {
-    this.userService.getBase().subscribe(fases => {
-    });
-    this.userService.listaInicial$.subscribe(
-      fases => {
-        params.api.setRowData(fases);
-        this.userService.listaUpdates$.subscribe(newRowData => {
+    this.service.getBase().subscribe(user => {});
+    this.service.listaInicial$.subscribe(
+      user => {
+        params.api.setRowData(user);
+        this.service.listaUpdates$.subscribe(newRowData => {
           params.api.updateRowData({ update: newRowData });
         });
       });
@@ -110,7 +107,7 @@ export class UserListComponent implements OnInit {
   }
 
   delete(user): void {
-    this.userService.deleteBase(user).subscribe(() => { });
+    this.service.deleteBase(user).subscribe(() => { });
   }
 
 }

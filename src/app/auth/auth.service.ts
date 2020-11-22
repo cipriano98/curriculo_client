@@ -10,9 +10,9 @@ import { UtilService } from '../shared/utils.service'
 import { Auth } from './auth'
 
 const login =
-  // `${api.production}/user/signin`
+  `${api.production}/user/signin`
   // `${api.localhost}/user/signin`
-  `${api.test}/usuario/signin`
+  // `${api.test}/usuario/signin`
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -66,7 +66,7 @@ export class AuthService {
 
             location.href = '/'
 
-            this.utils.emitirMensagem(`Sua sessão irá expirar ${expiresAt.toLowerCase()}`, 10000)
+            this.utils.sendMessage(`Sua sessão irá expirar ${expiresAt.toLowerCase()}`, 10000)
           } else {
             this.loggedIn.next(false)
             this.router.navigate(['/login'])

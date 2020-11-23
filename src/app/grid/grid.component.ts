@@ -1,11 +1,9 @@
-
 import { Component, Input, OnInit } from '@angular/core'
 import { CellRange, ColDef, GetContextMenuItemsParams, GridOptions, MenuItemDef } from 'ag-grid-community'
 import { BotoesGridComponent } from 'src/app/shared/botoes-grid/botoes-grid.component'
-import 'ag-grid-enterprise'
-
 import { UtilService } from 'src/app/shared/utils.service'
 
+import 'ag-grid-enterprise'
 
 @Component({
   selector: 'app-grid',
@@ -17,7 +15,7 @@ export class GridComponent implements OnInit {
   public gridOptions: GridOptions
   @Input() public entity: string
   @Input() public entityEdit: any
-  @Input() public service: any
+  @Input() public entityService: any
   @Input() public columns: ColDef[]
 
   constructor(
@@ -40,7 +38,7 @@ export class GridComponent implements OnInit {
         maxWidth: 400,
         // floatingFilter: false
       },
-      columnDefs: Array.prototype.push.apply(
+      columnDefs: [].concat(
         [
           {
             headerName: 'Ação',
@@ -52,7 +50,7 @@ export class GridComponent implements OnInit {
             sortable: false,
             filter: false,
             resizable: false,
-          },
+          }
         ],
         this.columns
       ),
@@ -90,11 +88,11 @@ export class GridComponent implements OnInit {
   }
 
   onGridReady(params) {
-    this.service.getBase().subscribe(entity => { });
-    this.service.listaInicial$.subscribe(
+    this.entityService.getBase().subscribe(entity => { });
+    this.entityService.ListInitial$.subscribe(
       entity => {
         params.api.setRowData(entity);
-        this.service.listaUpdates$.subscribe(newRowData => {
+        this.entityService.listUpdates$.subscribe(newRowData => {
           params.api.updateRowData({ update: newRowData });
         });
       });
@@ -105,7 +103,7 @@ export class GridComponent implements OnInit {
   }
 
   delete(id: number | string): void {
-    this.service.deleteBase(id).subscribe(() => { });
+    this.entityService.deleteBase(id).subscribe(() => { });
   }
 
   getContextMenuItems(params: GetContextMenuItemsParams) {

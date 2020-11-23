@@ -5,14 +5,10 @@ import * as moment from 'moment'
 import { BehaviorSubject } from 'rxjs'
 
 import { map } from '../../../node_modules/rxjs/operators'
-import { api, environment } from '../../environments/environment'
+import { environment } from '../../environments/environment'
 import { UtilService } from '../shared/utils.service'
 import { Auth } from './auth'
 
-const login =
-  `${api.production}/user/signin`
-  // `${api.localhost}/user/signin`
-  // `${api.test}/usuario/signin`
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -26,7 +22,7 @@ const httpOptions = {
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false)
 
-  // private api = environment.curriculumApi
+  private api: string = environment.curriculumApi
 
   constructor(
     private http: HttpClient,
@@ -41,10 +37,9 @@ export class AuthService {
     return this.loggedIn.asObservable()
   }
 
-  login(user) {
-    user['password'] = user.secret
-    const body = JSON.stringify(user)
-    return this.http.post<Auth>(login, body, httpOptions)
+  login(signin) {
+    const body = JSON.stringify(signin)
+    return this.http.post<Auth>(`${this.api}/user/signin`, body, httpOptions)
       .pipe(
         map((response) => {
           console.log(`response → ${JSON.stringify(response)}`)
@@ -78,6 +73,7 @@ export class AuthService {
 
   logout() {
     localStorage.clear()
+    localStorage.setItem('logged', String(false))
     this.loggedIn.next(false)
     location.href = '/login'
   }
@@ -85,6 +81,7 @@ export class AuthService {
   private verificaSessao() {
 
     if (!String(this.utils.getSessao('token'))) return this.loggedIn.next(false)
+    if (!String(this.utils.getSessao('logged'))) return this.loggedIn.next(false)
 
     if (!this.getExpiration()) {
       return this.logout()
@@ -95,9 +92,7 @@ export class AuthService {
   }
 
   getExpiration() {
-    const expiration = localStorage.getItem('expires_at')
-    const expiresAt = JSON.parse(expiration)
-    return moment(expiresAt)
+    return true
   }
 
 }

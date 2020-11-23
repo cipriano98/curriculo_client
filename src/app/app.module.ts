@@ -16,9 +16,9 @@ import { UserEditComponent } from './components/user/user-edit/user-edit.compone
 import { UserListComponent } from './components/user/user-list/user-list.component'
 import { MaterialModule } from './material/material.module'
 import { CustomHttpInterceptorService } from './noop-interceptor'
-import { OrganizacaoEditComponent } from './organizacao/organizacao-edit/organizacao-edit.component'
-import { OrganizacaoListComponent } from './organizacao/organizacao-list/organizacao-list.component'
-import { OrganizacaoService } from './organizacao/organizacao.service'
+import { AgencyEditComponent } from './agency/agency-edit/agency-edit.component'
+import { AgencyListComponent } from './agency/agency-list/agency-list.component'
+import { AgencyService } from './agency/agency.service'
 import { BotoesGridComponent } from './shared/botoes-grid/botoes-grid.component'
 import { MessagesService } from './shared/messages/messages.service';
 import { GridComponent } from './grid/grid.component'
@@ -26,8 +26,8 @@ import { GridComponent } from './grid/grid.component'
 @NgModule({
   declarations: [
     AppComponent,
-    OrganizacaoListComponent,
-    OrganizacaoEditComponent,
+    AgencyListComponent,
+    AgencyEditComponent,
     BotoesGridComponent,
     HomeComponent,
     LoginComponent,
@@ -54,7 +54,7 @@ import { GridComponent } from './grid/grid.component'
     ReactiveFormsModule,
   ],
   providers: [
-    OrganizacaoService,
+    AgencyService,
     MessagesService,
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService, multi: true },
@@ -62,7 +62,7 @@ import { GridComponent } from './grid/grid.component'
   bootstrap: [AppComponent],
   entryComponents: [
     BotoesGridComponent,
-    OrganizacaoEditComponent,
+    AgencyEditComponent,
     UserEditComponent,
   ],
 })

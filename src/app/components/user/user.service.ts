@@ -24,31 +24,31 @@ export class UserService {
 
   private api = api.production;
 
-  public listaInicial: User[] = [];
-  public listaUpdates: User[] = [];
+  public ListInitial: User[] = [];
+  public listUpdates: User[] = [];
 
-  private listaInicialSource = new Subject<User[]>();
-  private listaUpdatesSource = new Subject<User[]>();
+  private ListInitialSource = new Subject<User[]>();
+  private listUpdatesSource = new Subject<User[]>();
 
-  listaInicial$ = this.listaInicialSource.asObservable();
-  listaUpdates$ = this.listaUpdatesSource.asObservable();
+  ListInitial$ = this.ListInitialSource.asObservable();
+  listUpdates$ = this.listUpdatesSource.asObservable();
 
   del(id: number) {
-    this.listaInicial = this.listaInicial.filter(elementListaInicial => {
-      return elementListaInicial.id != id;
+    this.ListInitial = this.ListInitial.filter(elementListInitial => {
+      return elementListInitial.id != id;
     });
-    this.listaInicialSource.next(this.listaInicial);
+    this.ListInitialSource.next(this.ListInitial);
   }
 
   add(userSave: User) {
-    this.listaInicial.push(userSave);
-    this.listaInicialSource.next(this.listaInicial);
+    this.ListInitial.push(userSave);
+    this.ListInitialSource.next(this.ListInitial);
   }
 
   save(userSave: User) {
-    this.listaUpdates = [];
-    this.listaUpdates.push(userSave);
-    this.listaUpdatesSource.next(this.listaUpdates);
+    this.listUpdates = [];
+    this.listUpdates.push(userSave);
+    this.listUpdatesSource.next(this.listUpdates);
   }
 
   getBase(): Observable<any[]> {
@@ -56,8 +56,8 @@ export class UserService {
       .pipe(
         tap(user => {
           console.dir(user)
-          this.listaInicial = user;
-          this.listaInicialSource.next(this.listaInicial);
+          this.ListInitial = user;
+          this.ListInitialSource.next(this.ListInitial);
           this.utils.log(`Loaded users`);
         }),
         catchError(this.utils.handleError('getBase', []))

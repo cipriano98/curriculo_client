@@ -129,9 +129,4 @@ export class UserEditComponent implements OnInit {
       'newPassword': ['', Validators.required],
     });
   }
-
-  compareCategoryObjects(object1: any, object2: any) {
-    return object1 && object2 && object1 == object2;
-  }
-
 }

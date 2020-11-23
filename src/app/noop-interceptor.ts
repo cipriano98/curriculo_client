@@ -7,7 +7,10 @@ import { environment } from 'src/environments/environment';
 import { UtilService } from './shared/utils.service';
 
 environment.production ?
-  console.log('\n\n\nCurrículo Único\n\n\n\n')
+  console.log(`\n
+  \nCurrículo Único
+  Com um único cadastro seu currículo está em todas as plataformas
+  \n\n\n`)
   : (
     console.log('Localhost'),
     console.log("LocalStorage:", JSON.parse(localStorage.getItem('currentUser')))

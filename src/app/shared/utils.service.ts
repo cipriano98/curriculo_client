@@ -46,7 +46,7 @@ export class UtilService {
     return (error: any): Observable<T> => {
       // console.log(error)
       if (error === `Http failure response for (unknown url): 0 Unknown ${'Error' || 'message'}`) {
-        error = 'Servidor Zeta Análise fora do ar';
+        error = 'Ocorreu um erro, tente novamente mais tarde';
       }
       this.log(`${operation} failed: ${error}`);
 

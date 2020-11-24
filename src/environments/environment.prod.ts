@@ -1,6 +1,4 @@
-import { api } from './environment'
-
 export const environment = {
   production: true,
-  api: api.production
+  curriculumApi: `https://curriculo-unico.herokuapp.com/api/v1`
 };

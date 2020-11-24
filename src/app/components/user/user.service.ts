@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { api, environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 import { UtilService } from '../../shared/utils.service';
 import { User } from './user';
@@ -22,7 +22,7 @@ export class UserService {
     private utils: UtilService
   ) { }
 
-  private api = api.production;
+  private api = environment.curriculumApi;
 
   public ListInitial: User[] = [];
   public listUpdates: User[] = [];

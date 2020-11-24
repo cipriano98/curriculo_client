@@ -1,4 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
+import { APP_BASE_HREF } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -57,6 +58,7 @@ import { GridComponent } from './grid/grid.component'
     AgencyService,
     MessagesService,
     AuthService,
+    { provide: APP_BASE_HREF, useValue: '/' },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService, multi: true },
   ],
   bootstrap: [AppComponent],

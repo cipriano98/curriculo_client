@@ -9,23 +9,27 @@
   <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-  <!-- O SDK JS do Firebase principal é sempre necessário e deve ser listado primeiro -->
-  <script src="/__/firebase/8.1.1/firebase-app.js"></script>
-
-  <!-- TODO: Adicione SDKs para produtos Firebase que você deseja usar
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="/__/firebase/8.0.1/firebase-auth.js"></script>
-  <script src="/__/firebase/8.1.1/firebase-analytics.js"></script>
-
-  <!-- <script src="/__/firebase/8.0.1/firebase.js"></script> -->
-
-  <!-- Initialize Firebase -->
-  <script src="/__/firebase/init.js"></script>
 </head>
 
 <body class="mat-typography">
+
+  <!-- O SDK JS do Firebase principal é sempre necessário e deve ser listado primeiro -->
+  <script defer src="/__/firebase/8.1.1/firebase-app.js"></script>
+
+  <!-- TODO: Adicione SDKs para produtos Firebase que você deseja usar
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script defer src="/__/firebase/8.0.1/firebase-auth.js"></script>
+  <!-- <script defer src="/__/firebase/8.1.1/firebase-analytics.js"></script> -->
+
+  <script defer src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+  <!-- <script src="/__/firebase/8.0.1/firebase.js"></script> -->
+
+  <!-- Initialize Firebase -->
+  <script defer src="/__/firebase/init.js"></script>
+
+  <!-- My App -->
   <app-root></app-root>
+
 </body>
 
 </html>

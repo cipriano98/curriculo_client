@@ -4,11 +4,10 @@ import { Router } from '@angular/router'
 import * as moment from 'moment'
 import { BehaviorSubject } from 'rxjs'
 
-import { map } from '../../../node_modules/rxjs/operators'
+import { catchError, map, tap } from '../../../node_modules/rxjs/operators'
 import { environment } from '../../environments/environment'
 import { UtilService } from '../shared/utils.service'
 import { Auth } from './auth'
-
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -45,7 +44,7 @@ export class AuthService {
           console.log(`response → ${JSON.stringify(response)}`)
 
           if (response?.token) {
-            localStorage.setItem('currentUser', JSON.stringify({ 
+            localStorage.setItem('currentUser', JSON.stringify({
               id: response._id,
               email: response.email,
               role: response.role,
@@ -71,9 +70,17 @@ export class AuthService {
       )
   }
 
+  register(register) {
+    return this.http.post<any>(this.api + '/user/signup', register, httpOptions).pipe(
+      tap((user) => {
+        console.log('201 created:', user)
+      }),
+      catchError(this.utils.handleError('addUser'))
+    )
+  }
+
   logout() {
     localStorage.clear()
-    localStorage.setItem('logged', String(false))
     this.loggedIn.next(false)
     location.href = '/login'
   }

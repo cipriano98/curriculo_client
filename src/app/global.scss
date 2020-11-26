@@ -1,0 +1,31 @@
+::ng-deep .message {
+    color: #fff !important;
+  
+    .mat-simple-snackbar-action {
+      color      : #fafafa !important;
+      border-left: 2px solid #fff !important;
+    }
+  }
+  
+  ::ng-deep .ag-row-hover {
+    background-color: #dfdfff !important;
+  }
+  
+  ::ng-deep * {
+    margin         : 0;
+    padding        : 0;
+    border         : 0;
+    text-decoration: none;
+  }
+  
+  ::ng-deep .full-height {
+    height: 100vh
+  }
+  
+  ::ng-deep .toll-spacer {
+    flex: 1 1 auto
+  }
+  
+  ::ng-deep .transparent {
+    background-color:transparent
+  }

@@ -1,25 +1,28 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-drawer-container autosize>
 
-    <!-- [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="'over' 'push' : 'side'" -->
-    <mat-sidenav #drawer class="sidenav" fixedInViewport="true" mode="push" opened=false>
+    <mat-drawer #drawer class="drawer" role="navigation" fixedInViewport="true" mode="side" opened=false>
 
         <mat-toolbar color="primary" class="mat-toolbar mat-primary">
             <h1>Menu</h1>
-            <span class="remaining-space"></span>
+            <span class="toll-spacer"></span>
             <button mat-icon-button (click)="drawer.toggle()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar>
 
         <mat-nav-list>
-            <a routerLinkActive mat-list-item (click)="drawer.close()" routerLink="/agency">Agency</a>
-            <a routerLinkActive mat-list-item (click)="drawer.close()" routerLink="/user">User</a>
+            <a routerLinkActive mat-list-item (click)="drawer.toggle()" routerLink="/agency">
+                <div class="mat-list-item-content">Agency</div>
+            </a>
+            <a routerLinkActive mat-list-item (click)="drawer.toggle()" routerLink="/user">
+                <div class="mat-list-item-content">User</div>
+            </a>
         </mat-nav-list>
-    </mat-sidenav>
+    </mat-drawer>
 
-    <mat-sidenav-content style="width: 100%; height: 100vh">
+    <section>
 
-        <mat-toolbar color="primary" *ngIf="!loginScreen">
+        <mat-toolbar color="primary" *ngIf="!hideHeader">
 
             <section id="menu">
                 <button mat-icon-button (click)="drawer.toggle()" *ngIf="!drawer.opened">
@@ -33,29 +36,30 @@
                 </span>
             </section>
 
-            <span class="remaining-space"></span>
+            <span class="toll-spacer"></span>
 
             <section id="description">
                 <span *ngIf="innerWidth >= 1000">Com um único cadastro seu currículo está em todas as plataformas</span>
             </section>
 
-            <span class="remaining-space"></span>
+            <span class="toll-spacer"></span>
 
             <section id="acao">
                 <button mat-button (click)="login()" *ngIf="!isLoggedIn">Login</button>
+                <button mat-button (click)="signin()" *ngIf="!isLoggedIn">Cadastre-se</button>
                 <button mat-button (click)="perfil()" *ngIf="isLoggedIn">Perfil</button>
                 <button mat-button (click)="logout()" *ngIf="isLoggedIn">Sair</button>
             </section>
 
         </mat-toolbar>
 
-        <main principal fxLayout="row" fxLayoutAlign="center center">
-            <section style="height: 78vh" fxFlex="95%">
-                <router-outlet></router-outlet>
-            </section>
-        </main>
+    </section>
 
-        <!-- <app-footer style="width: 100%; bottom: 0;"></app-footer> -->
+    <main principal fxLayout="row" fxLayoutAlign="center stretch">
+        <div [class]="!hideHeader ? 'components-height' : 'full-height'" fxFlex="95%">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+    <!-- <app-footer style="width: 100%; bottom: 0;"></app-footer> -->
 
-    </mat-sidenav-content>
-</mat-sidenav-container>
+</mat-drawer-container>

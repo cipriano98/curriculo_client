@@ -22,7 +22,10 @@ import { AgencyListComponent } from './agency/agency-list/agency-list.component'
 import { AgencyService } from './agency/agency.service'
 import { BotoesGridComponent } from './shared/botoes-grid/botoes-grid.component'
 import { MessagesService } from './shared/messages/messages.service';
-import { GridComponent } from './grid/grid.component'
+import { GridComponent } from './grid/grid.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SigninComponent } from './components/signin/signin.component';
+import { ProfileComponent } from './components/profile/profile.component'
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { GridComponent } from './grid/grid.component'
     UserEditComponent,
     FooterComponent,
     GridComponent,
+    SigninComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,7 @@ import { GridComponent } from './grid/grid.component'
     MaterialModule,
     HttpClientModule,
     FlexLayoutModule,
+    FontAwesomeModule,
   ],
   exports: [
     BrowserModule,

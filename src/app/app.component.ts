@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 
 import { AuthService } from './auth/auth.service'
 import { UtilService } from './shared/utils.service'
@@ -6,23 +7,24 @@ import { UtilService } from './shared/utils.service'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss', './global.scss']
 })
 export class AppComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly router: Router,
     private readonly utils: UtilService
   ) { }
 
   innerWidth: any
   isLoggedIn: boolean = Boolean(localStorage.getItem('logged'))
-  loginScreen: boolean
+  hideHeader: boolean
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.isLoggedIn = Boolean(localStorage.getItem('logged'))
-    this.loginScreen = location.pathname === '/login'
+    this.hideHeader = location.pathname === '/login' || location.pathname === '/signin'
     console.log(this.utils.getSessao())
   }
 
@@ -30,12 +32,9 @@ export class AppComponent implements OnInit {
     this.innerWidth = window.innerWidth
   }
 
-  // @HostListener('load', ['$event']) onLoad(event) {
-  //   console.log(`event → ${JSON.stringify(event)}`)
-  //   this.isLoggedIn = Boolean(localStorage.getItem('logged'))
-  // }
 
-  perfil() { this.authService.logout() }
+  perfil() { this.router.navigate(['profile']) }
   login() { location.href = '/login' }
+  signin() { location.href = '/signin' }
   logout() { this.authService.logout() }
 }

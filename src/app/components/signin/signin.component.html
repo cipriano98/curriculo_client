@@ -3,10 +3,6 @@
     <mat-card-content fxLayout="column" fxLayoutAlign="space-around center">
       <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
 
-        <div fxLayoutAlign="center center">
-          <img src="../../assets/images/logo.png" height="150" alt="logo">
-        </div>
-
         <mat-form-field>
 
           <mat-label>Email</mat-label>
@@ -34,10 +30,36 @@
           </mat-error>
         </mat-form-field>
 
-        <div fxLayoutAlign="center center">
-          <button mat-raised-button color="primary">Login</button>
-        </div>
+        <mat-form-field>
 
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'"
+            [placeholder]="hidePassword ? '********' : 'Password'" formControlName="secret" required>
+
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword" (keydown.enter)="hidePassword = !hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
+          <mat-error *ngIf="isFieldInvalid('secret')">
+            Por favor informe sua senha
+          </mat-error>
+        </mat-form-field>
+
+        <mat-list>
+
+          <mat-list-item fxLayoutAlign="center">
+            <button mat-raised-button color="primary" color="primary">Cadastrar</button>
+          </mat-list-item>
+
+            <mat-divider inset class="divider"></mat-divider>
+
+          <mat-list-item fxLayoutAlign="center">
+            <span mat-line class="possui-conta">Já possui conta?</span>
+            <a mat-line mat-raised-button color="primary" routerLink="/login">Login</a>
+          </mat-list-item>
+
+        </mat-list>
       </form>
     </mat-card-content>
   </mat-card>

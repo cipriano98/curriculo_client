@@ -1,4 +1,4 @@
-<mat-toolbar style="background-color:transparent">
+<mat-toolbar class="transparent">
 
   <h1>{{entity}}</h1>
   <span class="toll-spacer"></span>
@@ -8,6 +8,6 @@
 
 </mat-toolbar>
 
-<ag-grid-angular #agGrid style="height: 100%" class="ag-theme-balham" [gridOptions]="gridOptions"
-  [getRowNodeId]="getRowNodeId" (gridReady)="onGridReady($event)">
+<ag-grid-angular #agGrid class="ag-theme-balham aggrid" [gridOptions]="gridOptions" [getRowNodeId]="getRowNodeId"
+  (gridReady)="onGridReady($event)">
 </ag-grid-angular>

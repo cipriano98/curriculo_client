@@ -8,8 +8,9 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "g s --configuration=production",
+    "start": "ng s --configuration=production",
     "serve": "firebase serve",
+    "deploy": "firebase deploy -f",
     "dev": "ng s --port 3010 -o",
     "build:dev": "ng build",
     "build": "ng build --prod",

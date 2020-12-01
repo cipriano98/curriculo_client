@@ -4,7 +4,8 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
 
         <div fxLayoutAlign="center center">
-          <img src="../../assets/images/logo.png" height="150" alt="logo">
+          <!-- <img src="../../assets/images/logo.png" height="150" alt="logo"> -->
+          <img src="https://www.flaticon.com/premium-icon/icons/svg/2841/2841987.svg" height="150" alt="logo">
         </div>
 
         <mat-form-field>
@@ -35,8 +36,22 @@
         </mat-form-field>
 
         <div fxLayoutAlign="center center">
-          <button mat-raised-button color="primary">Login</button>
         </div>
+        
+        <mat-list>
+          
+          <mat-list-item fxLayoutAlign="center">
+            <button mat-raised-button color="primary">Login</button>
+          </mat-list-item>
+          
+          <mat-divider inset class="divider"></mat-divider>
+          
+          <mat-list-item fxLayoutAlign="center">
+            <span mat-line class="possui-conta">Ainda não possui conta?</span>
+            <a mat-line mat-raised-button color="primary" routerLink="/signup">Cadastre-se</a>
+          </mat-list-item>
+
+        </mat-list>
 
       </form>
     </mat-card-content>

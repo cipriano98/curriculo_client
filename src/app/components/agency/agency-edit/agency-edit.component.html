@@ -1,0 +1,52 @@
+
+
+<h2 mat-dialog-title>Agency</h2>
+
+<mat-dialog-content>
+
+  <form [formGroup]="agencyForm" class="container" fx #f="ngForm" novalidate (keydown.enter)="$event.preventDefault()">
+
+    <!-- ="$event.target.tagName == 'TEXTAREA'" -->
+    <div fxLayout="column" fxLayoutAlign="start">
+
+      <div fxFlex="100%" fxLayoutAlign="end end">
+        <mat-slide-toggle formControlName="active">Ativo</mat-slide-toggle>
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="2.5%">
+
+        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+          <mat-label>Registro Federal</mat-label>
+          <input type="text" matInput formControlName="registrofederal">
+          <!-- <mat-error>
+            {{ (entidadeForm.controls.registroFederal.errors ? entidadeForm.controls.registroFederal.errors.registroFederal : '') }}
+          </mat-error> -->
+        </mat-form-field>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayoutAlign="end end">
+
+  <button mat-dialog-close mat-mini-fab fxFlexOffset="10px" color="theme" matTooltip="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <button mat-dialog-close mat-mini-fab (click)="onSubmit()" type="submit" color="primary" matTooltip="Save">
+    <mat-icon>check</mat-icon>
+  </button>
+  
+</mat-dialog-actions>

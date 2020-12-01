@@ -24,7 +24,6 @@ export class BotoesGridComponent implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.params = params
-    console.dir(params);
     this.excluir = true
     this.alterar = true
   }

@@ -25,26 +25,13 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(){
     this.columns = [
-      // {
-      //   headerName: 'Ação',
-      //   field: 'value',
-      //   cellRenderer: 'BotoesGridComponent',
-      //   colId: 'params',
-      //   maxWidth: 80,
-      //   minWidth: 80,
-      //   sortable: false,
-      //   filter: false,
-      //   resizable: false,
-      // },
-      { headerName: '#', field: 'id', maxWidth: 85, minWidth: 85, },
-      { headerName: 'Email', field: 'email', },
+      { headerName: '#', field: 'id', maxWidth: 85, minWidth: 85, filter: 'number', sort: 'asc' },
+      { headerName: 'Email', field: 'email' },
       { headerName: 'Fullname', field: 'fullname', },
-      { headerName: 'Gender', field: 'gender', },
+      { headerName: 'Gender', field: 'gender', filter: 'set' },
       { headerName: 'Nickname', field: 'nickname', },
       { headerName: 'Preferencialname', field: 'preferencialname', },
     ]
     this.entityService = this.service
   }
 }
-
-

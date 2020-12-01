@@ -15,7 +15,10 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fulano = String(this.utils.getSessao('email')) || 'Fulano'
+    this.fulano =
+      String(this.utils.getSessao('name')) ||
+      String(this.utils.getSessao('email')) ||
+      'Fulano'
   }
 
 }

@@ -1,14 +1,41 @@
+<section>
+
+    <mat-toolbar color="primary" *ngIf="!hideHeader">
+
+        <section id="menu">
+            <button mat-icon-button (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="logo">
+                <a routerLink="/">
+                    <!-- <img src="assets/images/logo.png" height="22" /> -->
+                    <span *ngIf="innerWidth >= 365">Currículo Único</span>
+                </a>
+            </span>
+        </section>
+
+        <span class="toll-spacer"></span>
+
+        <section *ngIf="innerWidth >= 1050" id="description">
+            <span >Com um único cadastro seu currículo está em todas as plataformas</span>
+        </section>
+
+        <span class="toll-spacer"></span>
+
+        <section id="acao">
+            <button mat-button (click)="login()" *ngIf="!isLoggedIn">Login</button>
+            <button mat-button (click)="signup()" *ngIf="!isLoggedIn">Cadastre-se</button>
+            <button mat-button (click)="perfil()" *ngIf="isLoggedIn">Perfil</button>
+            <button mat-button (click)="logout()" *ngIf="isLoggedIn">Sair</button>
+        </section>
+
+    </mat-toolbar>
+
+</section>
+
 <mat-drawer-container autosize>
 
     <mat-drawer #drawer class="drawer" role="navigation" fixedInViewport="true" mode="side" opened=false>
-
-        <mat-toolbar color="primary" class="mat-toolbar mat-primary">
-            <h1>Menu</h1>
-            <span class="toll-spacer"></span>
-            <button mat-icon-button (click)="drawer.toggle()">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar>
 
         <mat-nav-list>
             <a routerLinkActive mat-list-item (click)="drawer.toggle()" routerLink="/agency">
@@ -18,45 +45,11 @@
                 <div class="mat-list-item-content">User</div>
             </a>
         </mat-nav-list>
+        
     </mat-drawer>
 
-    <section>
-
-        <mat-toolbar color="primary" *ngIf="!hideHeader">
-
-            <section id="menu">
-                <button mat-icon-button (click)="drawer.toggle()" *ngIf="!drawer.opened">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <span class="logo">
-                    <a routerLink="/">
-                        <!-- <img src="assets/images/logo.png" height="22" /> -->
-                        <span *ngIf="innerWidth >= 365">Currículo Único</span>
-                    </a>
-                </span>
-            </section>
-
-            <span class="toll-spacer"></span>
-
-            <section id="description">
-                <span *ngIf="innerWidth >= 1000">Com um único cadastro seu currículo está em todas as plataformas</span>
-            </section>
-
-            <span class="toll-spacer"></span>
-
-            <section id="acao">
-                <button mat-button (click)="login()" *ngIf="!isLoggedIn">Login</button>
-                <button mat-button (click)="signin()" *ngIf="!isLoggedIn">Cadastre-se</button>
-                <button mat-button (click)="perfil()" *ngIf="isLoggedIn">Perfil</button>
-                <button mat-button (click)="logout()" *ngIf="isLoggedIn">Sair</button>
-            </section>
-
-        </mat-toolbar>
-
-    </section>
-
     <main principal fxLayout="row" fxLayoutAlign="center stretch">
-        <div [class]="!hideHeader ? 'components-height' : 'full-height'" fxFlex="95%">
+        <div [class]="hideHeader ? 'full-height' : 'components-height'" fxFlex="95%">
             <router-outlet></router-outlet>
         </div>
     </main>

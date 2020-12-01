@@ -55,10 +55,10 @@ export class UserService {
     return this.http.get<any[]>(this.api + '/user')
       .pipe(
         tap(user => {
-          console.dir(user)
+          // console.dir(user)
           this.ListInitial = user;
           this.ListInitialSource.next(this.ListInitial);
-          this.utils.log(`Loaded users`);
+          console.log(`Loaded users`);
         }),
         catchError(this.utils.handleError('getBase', []))
       );
@@ -69,7 +69,7 @@ export class UserService {
     return this.http.delete<User>(url, httpOptions).pipe(
       tap(user => {
         this.del(id);
-        this.utils.log(`Deleted user`);
+        console.log(`Deleted user`);
       }),
       catchError(this.utils.handleError<User>('deleteUser'))
     );
@@ -78,7 +78,7 @@ export class UserService {
   getBasePorId(id: number): Observable<User> {
     const url = `${this.api + '/user'}/${id}`;
     return this.http.get<User>(url).pipe(
-      tap(user => this.utils.log(`User found`)),
+      tap(user => console.log(`User found`)),
       catchError(this.utils.handleError<User>(`getBasePorId id=${id}`))
     );
   }
@@ -89,11 +89,11 @@ export class UserService {
       tap(
         user => {
           if (user.email !== null)
-            this.utils.log('Este email já existe em nossa base de dados')
+            console.log('Este email já existe em nossa base de dados')
           else
-            this.utils.log(`Este email não existe em nossa base de dados`)
+            console.log(`Este email não existe em nossa base de dados`)
         },
-        error => this.utils.log(`Erro na função getBasePorEmail → ${error}`)
+        error => console.log(`Erro na função getBasePorEmail → ${error}`)
       ),
       catchError(this.utils.handleError<User>(`getBasePorEmail email=${email}`))
     );
@@ -105,7 +105,7 @@ export class UserService {
         tap((user: User) => {
           console.log('User changed:', user);
           this.save(user);
-          this.utils.log(`Updated user`);
+          console.log(`Updated user`);
         }),
         catchError(this.utils.handleError<User>('addUser'))
       );
@@ -114,7 +114,7 @@ export class UserService {
         tap((user: User) => {
           console.log('User created:', user);
           this.add(user);
-          this.utils.log(`Added user`);
+          console.log(`Added user`);
         }),
         catchError(this.utils.handleError<User>('addUser'))
       );

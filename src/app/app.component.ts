@@ -25,7 +25,8 @@ export class AppComponent implements OnInit {
     this.innerWidth = window.innerWidth;
     this.isLoggedIn = Boolean(localStorage.getItem('logged'))
     this.hideHeader = location.pathname === '/login' || location.pathname === '/signin'
-    console.log(this.utils.getSessao())
+    console.log('getSessao ↓')
+    console.dir(this.utils.getSessao())
   }
 
   @HostListener('window:resize', ['$event']) onResize(event) {
@@ -35,6 +36,6 @@ export class AppComponent implements OnInit {
 
   perfil() { this.router.navigate(['profile']) }
   login() { location.href = '/login' }
-  signin() { location.href = '/signin' }
+  signup() { location.href = '/signup' }
   logout() { this.authService.logout() }
 }

@@ -27,9 +27,7 @@ export class AuthService {
     private http: HttpClient,
     private utils: UtilService,
     private router: Router,
-  ) {
-    String(this.utils.getSessao('token'))
-  }
+  ) { }
 
   get isLoggedIn() {
     this.verificaSessao()
@@ -48,7 +46,7 @@ export class AuthService {
               id: response._id,
               email: response.email,
               role: response.role,
-              name: response.name,
+              name:  response.name,
               token: response.token
             }))
 

@@ -1,7 +1,7 @@
-<div class="container" fxLayout="column" fxFlex="100%" fxLayoutGap="1%">
-  <mat-toolbar color="primary">
-    <span>Usuário</span>
-  </mat-toolbar>
+<h2 mat-dialog-title>User</h2>
+
+<mat-dialog-content>
+
   <form [formGroup]="usuarioForm" class="container" fx #f="ngForm" novalidate>
     <div fxLayout="column" fxLayoutAlign="start">
       <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="2.5%">
@@ -32,9 +32,6 @@
           <mat-hint class="hintError">
             {{getFormPasswordError()}}
           </mat-hint>
-          <!-- <mat-error [hidden]="">
-              Senha deve possuir pelo menos 6 caracteres
-          </mat-error> -->
         </mat-form-field>
 
         <mat-form-field *ngIf="alterarSenha || !id" appearance="standard" [floatLabel]="true"
@@ -50,21 +47,21 @@
           <mat-hint *ngIf="!camposSenhaIguais" class="hintError">
             Os campos não coincidem
           </mat-hint>
-          <!-- <mat-error [hidden]="">
-                  Senha deve possuir pelo menos 6 caracteres
-          </mat-error> -->
         </mat-form-field>
 
       </div>
     </div>
   </form>
-  <div mat-dialog-actions dir="rtl">
-    <button [disabled]="desabilitarOnSubimit()" mat-mini-fab (click)="onSubmit()" type="submit" color="primary">
-      <mat-icon>check</mat-icon>
-    </button>
-    <button mat-mini-fab (click)="onNoClick()" fxFlexOffset="10px" color="theme">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-  <!-- <app-form-debug [form]="usuarioForm"></app-form-debug> -->
-</div>
+  
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayoutAlign="end end">
+
+  <button mat-dialog-close mat-mini-fab fxFlexOffset="10px" color="theme" matTooltip="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button [disabled]="desabilitarOnSubmit()" mat-mini-fab (click)="onSubmit()" type="submit" color="primary" matTooltip="Save">
+    <mat-icon>check</mat-icon>
+  </button>
+
+</mat-dialog-actions>

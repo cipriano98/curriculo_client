@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Agency } from './model/agency';
 import { environment } from 'src/environments/environment';
-import { UtilService } from '../shared/utils.service';
+import { UtilService } from '../../shared/utils.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -56,7 +56,7 @@ export class AgencyService {
         tap(agency => {
           this.ListInitial = agency;
           this.ListInitialSource.next(this.ListInitial);
-          this.utils.log(`Agency found`);
+          console.log(`Agency found`);
         }),
         catchError(this.utils.handleError('getBase', []))
       );
@@ -67,7 +67,7 @@ export class AgencyService {
     return this.http.delete<Agency>(url, httpOptions).pipe(
       tap(agency => {
         this.del(id);
-        this.utils.log(`Deleted Agency`);
+        console.log(`Deleted Agency`);
       }),
       catchError(this.utils.handleError<Agency>('agency'))
     );
@@ -76,7 +76,7 @@ export class AgencyService {
   getBasePorId(id: number): Observable<Agency> {
     const url = `${this.api + '/agency'}/${id}`;
     return this.http.get<Agency>(url).pipe(
-      tap(agency => this.utils.log(`Agency found`)),
+      tap(agency => console.log(`Agency found`)),
       catchError(this.utils.handleError<Agency>(`getBasePorId id=${id}`))
     );
   }
@@ -87,7 +87,7 @@ export class AgencyService {
       return this.http.put<Agency>(this.api + '/agency/' + agency.id, agency, httpOptions).pipe(
         tap((org: Agency) => {
           this.save(org);
-          this.utils.log(`Updated Agency`);
+          console.log(`Updated Agency`);
         }),
         catchError(this.utils.handleError<Agency>('AlterAgency'))
       );
@@ -96,7 +96,7 @@ export class AgencyService {
     return this.http.post<Agency>(this.api + '/agency', agency, httpOptions).pipe(
       tap((org: Agency) => {
         this.add(org);
-        this.utils.log(`Crated Agency`);
+        console.log(`Crated Agency`);
       }),
       catchError(this.utils.handleError<Agency>('addAgency'))
     );

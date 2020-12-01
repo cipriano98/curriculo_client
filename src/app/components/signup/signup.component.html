@@ -30,9 +30,9 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <!-- <mat-form-field> -->
 
-          <mat-label>Password</mat-label>
+        <!-- <mat-label>Password</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'"
             [placeholder]="hidePassword ? '********' : 'Password'" formControlName="secret" required>
 
@@ -43,16 +43,38 @@
 
           <mat-error *ngIf="isFieldInvalid('secret')">
             Por favor informe sua senha
+          </mat-error> -->
+        <!-- </mat-form-field> -->
+
+        <mat-form-field>
+
+          <mat-label>CPF/CNPJ</mat-label>
+          <input matInput placeholder="ex. wwwxxxyyyzz" formControlName="cpf" required>
+
+          <mat-error *ngIf="isFieldInvalid('cpf')">
+            Por favor informe sua CPF
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <mat-label>Apelido</mat-label>
+          <span matPrefix>@ &nbsp;</span>
+          <input matInput placeholder="FulanoJr" formControlName="nickname" required>
+          <mat-icon matSuffix (click)="randomNickname()">sync</mat-icon>
+
+          <mat-error *ngIf="isFieldInvalid('secret')">
+            Por favor informe sua senha
           </mat-error>
         </mat-form-field>
 
         <mat-list>
 
           <mat-list-item fxLayoutAlign="center">
-            <button mat-raised-button color="primary" color="primary">Cadastrar</button>
+            <button mat-raised-button color="primary">Cadastrar</button>
           </mat-list-item>
 
-            <mat-divider inset class="divider"></mat-divider>
+          <mat-divider inset class="divider"></mat-divider>
 
           <mat-list-item fxLayoutAlign="center">
             <span mat-line class="possui-conta">Já possui conta?</span>

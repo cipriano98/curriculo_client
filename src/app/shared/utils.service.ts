@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
-import { Auth } from '../auth/auth';
 
+import { Auth } from '../auth/auth';
 import { MessagesService } from './messages/messages.service';
 
 export interface size {
@@ -21,7 +21,7 @@ export class UtilService {
     public dialog: MatDialog
   ) { }
 
-  public getSessao(atribute?: string): Auth | string {
+  public getSessao(atribute?: string): any {
     const currentUser = localStorage.getItem('currentUser')
     if(atribute && currentUser) {
       return JSON.parse(currentUser)[atribute]
@@ -30,10 +30,6 @@ export class UtilService {
       return JSON.parse(currentUser)
     }
     return ''
-  }
-
-  log(message: any) {
-    console.log(message);
   }
 
   /**
@@ -48,7 +44,7 @@ export class UtilService {
       if (error === `Http failure response for (unknown url): 0 Unknown ${'Error' || 'message'}`) {
         error = 'Ocorreu um erro, tente novamente mais tarde';
       }
-      this.log(`${operation} failed: ${error}`);
+      console.log(`${operation} failed: ${error}`);
 
       if (error) {
         this.messageService.add(error, 10000);
@@ -57,26 +53,6 @@ export class UtilService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }
-
-  dateToString(date: Date): string {
-    if (!date) return null;
-    date = new Date(date);
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    const dateFormat = date.toLocaleDateString('pt-BR', options);
-    const dia = dateFormat.slice(0, 2);
-    const mes = dateFormat.slice(3, 5);
-    const ano = dateFormat.slice(6, 10);
-    const hora = dateFormat.slice(11, 13);
-    const minuto = dateFormat.slice(14, 16);
-    const segundo = dateFormat.slice(17, 19);
-    const dateStr = ano + '-' + mes + '-' + dia + 'T' + hora + ':' + minuto + ':' + segundo;
-    return dateStr;
-  }
-
-  todayString(): string {
-    const now = new Date();
-    return this.dateToString(now);
   }
 
   emitirErrosSubmit(formGroup: FormGroup) {
@@ -95,28 +71,18 @@ export class UtilService {
     return this.messageService.add(mensagem, duration, action);
   }
 
-  openEditModal(componente: any, id: number, size: size = { width: '99,9%', height: '77%' }): void {
-    const dialogRef = this.dialog.open(componente, {
-      width: size.width,
-      height: size.height,
+  openEditModal(componente: any, id: number, config?: MatDialogConfig): void {
+    const configuration = config || {
+      maxWidth: '1200px',
+      width: '90%',
+      maxHeight: '750px',
+      height: '90%',
       data: { idEdicao: id }
-    });
-  }
-
-  formatarCpfOuCnpj(cpfOuCnpj) {
-    const numbers = cpfOuCnpj.match(/\d/g);
-    let numberLength = 0;
-    if (numbers) {
-      numberLength = numbers.join('').length;
     }
-    if (numberLength === 11) {
-      return cpfOuCnpj.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-
-    } else if (numberLength === 14) {
-      return cpfOuCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
-    }
+    console.dir(configuration.data)
+    const dialogRef = this.dialog.open(componente, configuration);
   }
-
+  
   getLanguage() {
     return navigator.language || 'en'
   }

@@ -18,6 +18,18 @@ export class GridComponent implements OnInit {
   @Input() public entityService: any
   @Input() public columns: ColDef[]
 
+  private action: ColDef = {
+    headerName: 'Action',
+    field: 'value',
+    cellRenderer: 'BotoesGridComponent',
+    colId: 'params',
+    maxWidth: 80,
+    minWidth: 80,
+    sortable: false,
+    filter: false,
+    resizable: false,
+  }
+
   constructor(
     private utils: UtilService,
   ) { }
@@ -30,28 +42,17 @@ export class GridComponent implements OnInit {
     return <GridOptions>{
       defaultColDef: {
         enableCellChangeFlash: true,
-        filter: 'agTextColumnFilter',
+        filter: 'text',
         resizable: true,
         sortable: true,
         flex: 1,
         autoHeight: true,
         maxWidth: 400,
-        // floatingFilter: false
+        minWidth: 150,
       },
+      unSortIcon: true,
       columnDefs: [].concat(
-        [
-          {
-            headerName: 'Ação',
-            field: 'value',
-            cellRenderer: 'BotoesGridComponent',
-            colId: 'params',
-            maxWidth: 80,
-            minWidth: 80,
-            sortable: false,
-            filter: false,
-            resizable: false,
-          }
-        ],
+        this.action,
         this.columns
       ),
       immutableData: true,
@@ -87,58 +88,47 @@ export class GridComponent implements OnInit {
     return data.id
   }
 
-  onGridReady(params) {
-    this.entityService.getBase().subscribe(entity => { });
-    this.entityService.ListInitial$.subscribe(
-      entity => {
-        params.api.setRowData(entity);
-        this.entityService.listUpdates$.subscribe(newRowData => {
-          params.api.updateRowData({ update: newRowData });
-        });
-      });
-  }
-
-  edit(id) {
-    this.utils.openEditModal(this.entityEdit, id);
-  }
-
-  delete(id: number | string): void {
-    this.entityService.deleteBase(id).subscribe(() => { });
-  }
-
   getContextMenuItems(params: GetContextMenuItemsParams) {
-    const copiarUUID: MenuItemDef = {
+    const data = params.node.data
+    const component = params.context.componentParent
+
+    const addNew: MenuItemDef = {
+      name: 'Adicionar',
+      action: () => {
+        component.edit(0)
+      },
+      icon: '<i class="material-icons">add</i>'
+    }
+    const copyUUID: MenuItemDef = {
       name: 'Copiar UUID',
       action: () => {
-        alert(`ID: ${params.node.data.id}, UUID: ${params.node.data.uuid}`);
+        alert(`ID: ${data.id}, UUID: ${data.uuid}`);
       },
       cssClasses: ['redFont', 'bold'],
     }
-    const alterar = {
+    const alter = {
       name: 'Alterar',
       action: () => {
-        const data = params.node.data
-        // this.edit(data.id)
-        console.dir(data.id)
+        component.edit(data.id)
       },
       tooltip: 'Alterar',
-      icon: '<i class="material-icons">visibility</i>'
+      icon: '<i class="material-icons">edit</i>'
     }
-    const deletar: MenuItemDef = {
+    const deletePermanently: MenuItemDef = {
       name: 'Excluir',
-      action: () => this.delete(params.node.data),
+      action: () => params.context.componentParent.delete(params.node.data.id),
       tooltip: 'Excluir',
-      icon: '<i class="material-icons">delete_outline</i>'
+      icon: '<i class="material-icons">delete</i>'
     }
+
     return [
-      copiarUUID,
-      alterar,
-      deletar,
+      addNew,
+      alter,
+      deletePermanently,
       {
         name: 'Always Disabled',
         disabled: true,
-        tooltip:
-          'Very long tooltip, did I mention that I am very long, well I am! Long!  Very Long!',
+        tooltip: 'Very long tooltip, did I mention that I am very long, well I am! Long!  Very Long!',
       },
       {
         name: 'Country',
@@ -186,40 +176,32 @@ export class GridComponent implements OnInit {
             action: () => {
               console.log('Alberto was pressed');
             },
-          },
-          {
-            name: 'Tony',
-            action: () => {
-              console.log('Tony was pressed');
-            },
-          },
-          {
-            name: 'Andrew',
-            action: () => {
-              console.log('Andrew was pressed');
-            },
-          },
-          {
-            name: 'Kev',
-            action: () => {
-              console.log('Kev was pressed');
-            },
-          },
-          {
-            name: 'Will',
-            action: () => {
-              console.log('Will was pressed');
-            },
-          },
+          }
         ],
       },
       'separator',
+      copyUUID,
       'copy',
-      'separator',
-      'chartRange',
     ];
   }
 
+  onGridReady(params) {
+    this.entityService.getBase().subscribe(entity => { });
+    this.entityService.ListInitial$.subscribe(
+      entity => {
+        params.api.setRowData(entity);
+        this.entityService.listUpdates$.subscribe(newRowData => {
+          params.api.updateRowData({ update: newRowData });
+        });
+      });
+  }
+
+  edit(id) {
+    this.utils.openEditModal(this.entityEdit, id);
+  }
+
+  delete(id: number | string): void {
+    this.entityService.deleteBase(id).subscribe(() => { });
+  }
+
 }
-
-

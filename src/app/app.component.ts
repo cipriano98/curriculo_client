@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.isLoggedIn = Boolean(localStorage.getItem('logged'))
-    this.hideHeader = location.pathname === '/login' || location.pathname === '/signin'
+    this.hideHeader = location.pathname === '/login' || location.pathname === '/signup'
     console.log('getSessao ↓')
     console.dir(this.utils.getSessao())
   }

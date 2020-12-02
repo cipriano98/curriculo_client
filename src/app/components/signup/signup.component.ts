@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { UtilService } from 'src/app/shared/utils.service'
 
 import { AuthService } from '../../auth/auth.service'
 
@@ -16,22 +17,25 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private readonly utils: UtilService,
+    private readonly authService: AuthService,
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
+      gender: ['', Validators.required],
+      fullname: ['', Validators.required],
       email: ['', Validators.required],
       secret: ['', Validators.required],
       cpf: ['', Validators.required],
-      nickname: ['', Validators.required]
+      nickname: [`Novo-Usuario-${Math.random().toString(36).substring(8)}`]
     });
   }
 
   randomNickname() {
-    const email = this.form.get('email').value.split('@')[0] || 'anonimo'
+    const email = this.form.get('email').value.split('@')[0] || 'Novo-Usuario'
     const random = Math.random().toString(36).substring(8)
-    this.form.get('nickname').setValue(`${email}.${random}`)
+    this.form.get('nickname').setValue(`${email}-${random}`)
   }
 
   isFieldInvalid(field: string) {
@@ -45,7 +49,19 @@ export class SignupComponent implements OnInit {
     if (this.form.valid) {
       this.authService.register(this.form.value)
         .subscribe(
-          () => { }
+          registered => {
+            if (!registered) {
+              this.utils.sendMessage(`${JSON.stringify(registered)}`)
+              console.dir(registered)
+            }
+            setTimeout(() => {
+              location.href = '/login'
+            }, 5000);
+          },
+          error => {
+            this.utils.sendMessage(`${error.message}`)
+            console.dir(error)
+          }
         )
     }
     this.formSubmitAttempt = true

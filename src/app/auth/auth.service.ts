@@ -4,7 +4,7 @@ import { Router } from '@angular/router'
 import * as moment from 'moment'
 import { BehaviorSubject } from 'rxjs'
 
-import { catchError, map, tap } from '../../../node_modules/rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 import { environment } from '../../environments/environment'
 import { UtilService } from '../shared/utils.service'
 import { Auth } from './auth'
@@ -35,10 +35,11 @@ export class AuthService {
   }
 
   login(signin) {
-    const body = JSON.stringify(signin)
-    return this.http.post<Auth>(`${this.api}/user/signin`, body, httpOptions)
+    const payload = JSON.stringify(signin)
+    return this.http.post<Auth>(`${this.api}/user/signin`, payload, httpOptions)
       .pipe(
-        map((response) => {
+        tap((response) => {
+          delete signin.secret
           console.log(`response → ${JSON.stringify(response)}`)
 
           if (response?.token) {
@@ -63,8 +64,8 @@ export class AuthService {
             this.loggedIn.next(false)
             this.router.navigate(['/login'])
           }
-
-        })
+        }),
+        catchError(error => this.utils.handleError(error))
       )
   }
 
@@ -72,6 +73,7 @@ export class AuthService {
     return this.http.post<any>(this.api + '/user/signup', register, httpOptions).pipe(
       tap((user) => {
         console.log('201 created:', user)
+        this.utils.sendMessage('Sucesso!! Você será redirecionado para o login')
       }),
       catchError(this.utils.handleError('addUser'))
     )

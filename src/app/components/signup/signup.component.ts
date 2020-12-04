@@ -15,6 +15,12 @@ export class SignupComponent implements OnInit {
   form: FormGroup
   formSubmitAttempt: boolean
 
+  gender = [
+    "MASCULINO",
+    "FEMININO",
+    "OUTRO"
+  ]
+
   constructor(
     private fb: FormBuilder,
     private readonly utils: UtilService,

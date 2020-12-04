@@ -2,16 +2,8 @@
   <mat-card>
     <mat-card-content fxLayout="column" fxLayoutAlign="space-around center">
       <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-
-        <mat-form-field>
-          <mat-label>Gender</mat-label>
-          <input matInput placeholder="Outro" formControlName="gender" required>
-          <mat-error *ngIf="isFieldInvalid('gender')">
-            Por favor informe seu gênero
-          </mat-error>
-        </mat-form-field>
         
-        <mat-form-field>
+        <mat-form-field #fullname>
           <mat-label>Fullname</mat-label>
           <input matInput placeholder="Maria José da Silva" formControlName="fullname" required>
           <mat-error *ngIf="isFieldInvalid('fullname')">
@@ -19,7 +11,30 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field #gender>
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender" required>
+            <mat-option>--</mat-option>
+            <mat-option value="MASCULINO">MASCULINO</mat-option>
+            <mat-option value="FEMININO">FEMININO</mat-option>
+            <mat-option value="OUTRO">OUTRO</mat-option>
+          </mat-select>
+          <mat-error *ngIf="isFieldInvalid('gender')">
+            Por favor informe seu gênero
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field #cpf>
+
+          <mat-label>CPF/CNPJ</mat-label>
+          <input matInput placeholder="00011122233" formControlName="cpf" required>
+
+          <mat-error *ngIf="isFieldInvalid('cpf')">
+            Por favor informe seu CPF
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field #email>
 
           <mat-label>Email</mat-label>
           <input matInput placeholder="Email" formControlName="email" required>
@@ -30,7 +45,7 @@
 
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field #password>
 
           <mat-label>Password</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'"
@@ -63,18 +78,7 @@
 
         </mat-form-field> -->
 
-        <mat-form-field>
-
-          <mat-label>CPF/CNPJ</mat-label>
-          <input matInput placeholder="00011122233" formControlName="cpf" required>
-
-          <mat-error *ngIf="isFieldInvalid('cpf')">
-            Por favor informe seu CPF
-          </mat-error>
-        </mat-form-field>
-
-
-        <mat-form-field>
+        <mat-form-field #nickname>
 
           <mat-label>Nickname</mat-label>
           <span matPrefix>@ &nbsp;</span>
@@ -83,7 +87,7 @@
 
         </mat-form-field>
 
-        <mat-list>
+        <mat-list #actions>
 
           <mat-list-item fxLayoutAlign="center">
             <button mat-raised-button color="primary">Cadastrar</button>
@@ -97,6 +101,7 @@
           </mat-list-item>
 
         </mat-list>
+
       </form>
     </mat-card-content>
   </mat-card>

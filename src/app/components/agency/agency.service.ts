@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Agency } from './model/agency';
+import { Agency } from './agency';
 import { environment } from 'src/environments/environment';
 import { UtilService } from '../../shared/utils.service';
 

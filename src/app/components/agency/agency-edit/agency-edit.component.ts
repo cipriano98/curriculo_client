@@ -1,9 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Agency } from '../model/agency';
-import { AgencyService } from '../agency.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { UtilService } from 'src/app/shared/utils.service';
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormBuilder, FormGroup } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { UtilService } from 'src/app/shared/utils.service'
+
+import { AgencyService } from '../agency.service'
+import { Agency } from '../agency'
 
 @Component({
   selector: 'app-agency-edit',
@@ -12,12 +13,10 @@ import { UtilService } from 'src/app/shared/utils.service';
 })
 export class AgencyEditComponent implements OnInit {
 
-  agency: Agency;
-  id: number;
-  nomeAgency: string;
-  agencyForm: FormGroup;
-  statusCode: number;
-  loading: boolean = false;
+  agency: Agency
+  id: number
+  agencyForm: FormGroup
+  loading: boolean = false
 
   constructor(
     public dialogRef: MatDialogRef<AgencyEditComponent>,
@@ -28,53 +27,59 @@ export class AgencyEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.id = this.data.idEdicao;
-    this.agency = new Agency();
+    this.id = this.data.idEdicao
+    this.agency = new Agency()
 
-    this.resetFormulario();
+    this.initialForm()
     if (this.id !== 0) {
       this.agencyService.getBasePorId(this.id)
         .subscribe(
           dados => {
-            this.atribuirDados(dados);
+            this.atribuirDados(dados)
           },
-          errorCode => this.statusCode = errorCode);
+          error => {
+            console.dir(error)
+          }
+        )
     }
   }
 
   atribuirDados(agency: Agency) {
-    this.agency = agency;
-    this.resetFormulario();
-    this.agencyForm.patchValue(this.agency);
-  };
+    this.agency = agency
+    this.initialForm()
+    this.agencyForm.patchValue(this.agency)
+  }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   async SaveAgency(): Promise<Agency> {
-    this.agency = Object.assign(this.agency, this.agencyForm.value);
-    return this.agencyService.saveBase(this.agency).toPromise();
+    this.agency = Object.assign(this.agency, this.agencyForm.value)
+    return this.agencyService.saveBase(this.agency).toPromise()
   }
 
   onSubmit() {
     if (this.agencyForm.valid) {
       this.SaveAgency().then(agency => {
-        this.agencyForm.reset();
+        this.agencyForm.reset()
       })
-      this.closeDialog();
+      this.closeDialog()
     } else {
-      this.utils.emitirErrosSubmit(this.agencyForm);
+      this.utils.emitirErrosSubmit(this.agencyForm)
     }
   }
 
-  resetFormulario() {
+  randomString() {
+    return Math.random().toString(36).substring(8)
+  }
+  initialForm() {
     this.agencyForm = this.fb.group({
-      'id': [undefined],
-      'name': [''],
-      'registrofederal': [''],
-      'active': [false],
-    });
+      name: [''],
+      registrofederal: [''],
+      site: [''],
+      active: [false],
+    })
   }
 
 }

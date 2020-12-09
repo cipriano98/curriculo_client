@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
 
-import { Auth } from '../auth/auth';
 import { MessagesService } from './messages/messages.service';
 
 export interface size {

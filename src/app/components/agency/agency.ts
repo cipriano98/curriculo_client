@@ -5,7 +5,7 @@ export class Agency {
   id: string
   name: string
   registrofederal: string
-  role: Role = Role.VACANCYDISTRIBUTOR
+  role: Role
   site: string
   links: string[]
   labellinks: string[]

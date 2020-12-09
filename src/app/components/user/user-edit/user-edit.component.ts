@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core'
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { UtilService } from 'src/app/shared/utils.service'
 
 import { User } from '../user'
 import { UserService } from '../user.service'
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { UtilService } from 'src/app/shared/utils.service'
-
 
 @Component({
   selector: 'app-user-edit',
@@ -120,10 +119,10 @@ export class UserEditComponent implements OnInit {
 
   initialForm() {
     this.usuarioForm = this.fb.group({
-      'id': [undefined],
-      'email': ['', Validators.email],
-      'password': ['', Validators.required],
-      'newPassword': ['', Validators.required],
+      id: [undefined],
+      email: ['', Validators.email],
+      password: ['', Validators.required],
+      newPassword: ['', Validators.required],
     })
   }
 }

@@ -59,10 +59,11 @@ export class SignupComponent implements OnInit {
             if (!registered) {
               this.utils.sendMessage(`${JSON.stringify(registered)}`)
               console.dir(registered)
+            } else {
+              setTimeout(() => {
+                location.href = '/login'
+              }, 5000)
             }
-            setTimeout(() => {
-              location.href = '/login'
-            }, 5000);
           },
           error => {
             this.utils.sendMessage(`${error.message}`)

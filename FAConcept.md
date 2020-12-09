@@ -27,8 +27,8 @@ Conceito C:
 
  - [ ] Aplicação inicial, realizando a funcionalidades 1;
  - [ ] Acesso a uma API de terceiro;
- - [ ] Persistência de dados;
- - [ ] Utilização razoável de todos os Frameworks.
+ - [x] Persistência de dados;
+ - [x] Utilização razoável de todos os Frameworks.
 
 Conceito B:
 
@@ -43,7 +43,7 @@ Conceito A:
  - [ ] Realização das funcionalidades para o conceito B;
  - [ ] Acesso a mais de uma API de terceiro utilizando de forma correta e adequada ao contexto do trabalho;
  - [ ] Aplicação totalmente funcional, com as funcionalidades 1 a 4 realizadas completamente;
- - [ ] Utilização de JWT e segurança tanto no front-ent quanto no back-end;
+ - [x] Utilização de JWT e segurança tanto no front-ent quanto no back-end;
  - [ ] A funcionalidade 1 deve ter suporte à imagem dos produtos e ser disposta em Grids Responsivas (ou trabalhar com Mapas);
  - [ ] Utilização de um sistema de controle de versão (ex: git) e de um ambiente de colaboração e gerenciamento de código baseado nesse controle de versão (ex: github, bitbucket).
 

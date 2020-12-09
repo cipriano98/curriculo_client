@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { CellRange, ColDef, GridOptions } from 'ag-grid-community';
-import { BotoesGridComponent } from 'src/app/shared/botoes-grid/botoes-grid.component';
-import { UtilService } from 'src/app/shared/utils.service';
+import { ColDef } from 'ag-grid-community';
 
 import { UserEditComponent } from '../user-edit/user-edit.component';
 import { UserService } from '../user.service';
@@ -23,12 +20,22 @@ export class UserListComponent implements OnInit {
     private readonly service: UserService
   ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.columns = [
       { headerName: '#', field: 'id', maxWidth: 85, minWidth: 85, filter: 'number', sort: 'asc' },
       { headerName: 'Email', field: 'email' },
       { headerName: 'Fullname', field: 'fullname', },
-      { headerName: 'Gender', field: 'gender', filter: 'set' },
+      { // Gender
+        headerName: 'Gender',
+        field: 'gender',
+        filter: 'set',
+        cellRenderer: param => {
+          const value = param.value
+          const lower = value.slice(1).toLowerCase()
+          const upper = value[0].toUpperCase()
+          return upper + lower
+        }
+      },
       { headerName: 'Nickname', field: 'nickname', },
       { headerName: 'Preferencialname', field: 'preferencialname', },
     ]

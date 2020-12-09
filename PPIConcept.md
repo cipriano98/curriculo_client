@@ -24,7 +24,7 @@ Conceito B:
 
  - [ ] Realizar as tarefas para alcançar o conceito C;
  - [ ] Realizar uma funcionalidade de negócio (ou CRUD) que manipule duas entidades simultaneamente na aplicação como um todo (aplicação front-end acessando os Web Services de forma correta e adequada);
- - [ ] Acesso aos Web Services de maneira adequada (trabalhando corretamente com os Padrões JavaScript ou do framework utilizado);
+ - [x] Acesso aos Web Services de maneira adequada (trabalhando corretamente com os Padrões JavaScript ou do framework utilizado);
  - [x] Código JavaScript (ou TypeScript) adequado e modularizado;
  - [x] Utilização de um sistema de controle de versão (ex: github, bitbucket);
  - [x] Interface Web adequada utilizando CSS.
@@ -34,7 +34,7 @@ Conceito A:
  - [ ] Aplicação completa, realizando todas as funcionalidades do conceito B com regras de negócio e validações aplicadas corretamente;
  - [x] Interface Web adequada e responsiva (sugere-se utilizar Bootstrap ou frameworks semelhantes);
  - [ ] Modelagem apropriada dos Web Services e do Mapeamento dos objetos no back-end e no front-end;
- - [ ] Aplicar técnicas de segurança (ex: oauth2, JWT) na aplicação, tanto no back-end quanto no front-end.
+ - [x] Aplicar técnicas de segurança (ex: oauth2, JWT) na aplicação, tanto no back-end quanto no front-end.
  - [ ] Utilizar alguma prática de mercado não vista em aula (uma das opções):
    - [ ] Utilizar testes unitários aplicados no front-end (JavaScript);  
    - [ ] Manipulação (upload e download) de imagens e/ou vídeos;

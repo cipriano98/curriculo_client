@@ -25,7 +25,16 @@
         <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
           fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
           <mat-label>Registro Federal</mat-label>
-          <input type="text" matInput formControlName="registrofederal">
+          <input matInput formControlName="registrofederal">
+          <!-- <mat-error>
+            {{ (entidadeForm.controls.registroFederal.errors ? entidadeForm.controls.registroFederal.errors.registroFederal : '') }}
+          </mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+          <mat-label>Site</mat-label>
+          <input matInput formControlName="site">
           <!-- <mat-error>
             {{ (entidadeForm.controls.registroFederal.errors ? entidadeForm.controls.registroFederal.errors.registroFederal : '') }}
           </mat-error> -->
@@ -45,7 +54,7 @@
     <mat-icon>close</mat-icon>
   </button>
 
-  <button mat-dialog-close mat-mini-fab (click)="onSubmit()" type="submit" color="primary" matTooltip="Save">
+  <button mat-mini-fab (click)="onSubmit()" type="submit" color="primary" matTooltip="Save">
     <mat-icon>check</mat-icon>
   </button>
   

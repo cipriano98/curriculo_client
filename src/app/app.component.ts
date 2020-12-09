@@ -20,8 +20,10 @@ export class AppComponent implements OnInit {
   innerWidth: any
   isLoggedIn: boolean = Boolean(localStorage.getItem('logged'))
   hideHeader: boolean
+  role: string
 
   ngOnInit() {
+    this.role = this.utils.getSessao('role')
     this.innerWidth = window.innerWidth;
     this.isLoggedIn = Boolean(localStorage.getItem('logged'))
     this.hideHeader = location.pathname === '/login' || location.pathname === '/signup'

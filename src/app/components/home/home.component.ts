@@ -8,17 +8,17 @@ import { UtilService } from 'src/app/shared/utils.service'
 })
 export class HomeComponent implements OnInit {
 
-  fulano: string
+  persona: string
 
   constructor(
     private readonly utils: UtilService
   ) { }
 
   ngOnInit() {
-    this.fulano =
+    this.persona =
       String(this.utils.getSessao('name')) ||
       String(this.utils.getSessao('email')) ||
-      'Fulano'
+      'Visitante'
   }
 
 }

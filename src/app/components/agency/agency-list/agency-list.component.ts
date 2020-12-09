@@ -23,19 +23,16 @@ export class AgencyListComponent {
   ngOnInit() {
     this.entityService = this.agencyService
     this.columns = [
-      {
-        headerName: 'Name',
-        field: 'name',
-      },
-      {
-        headerName: 'Federal Register',
-        field: 'registrofederal',
-      },
-      {
+      { headerName: 'Name', field: 'name', },
+      { headerName: 'Federal Register', field: 'registrofederal', },
+      { // Site
         headerName: 'Site',
         field: 'site',
-        cellRenderer: (param: CellClassParams) => {
-          return `<span>${param.value} <i class="icon"></i></span>`
+        cellRenderer: (param) => {
+          // Verificar se a scren é menor que 780px para mostrar somente o ícone
+          const style = `style="color:#1a53ff`
+          const spanIcon = `<span class="material-icons" ${style}">launch</span>`
+          return `<a href=${param.value} target="_blank">${spanIcon}</a>&nbsp;&nbsp;&nbsp; <i>${param.value}</i>`
         },
       },
     ]

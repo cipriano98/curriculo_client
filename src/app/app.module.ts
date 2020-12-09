@@ -25,7 +25,8 @@ import { GridComponent } from './grid/grid.component'
 import { MaterialModule } from './material/material.module'
 import { CustomHttpInterceptorService } from './noop-interceptor'
 import { BotoesGridComponent } from './shared/botoes-grid/botoes-grid.component'
-import { MessagesService } from './shared/messages/messages.service'
+import { MessagesService } from './shared/messages/messages.service';
+import { VacancyComponent } from './components/vacancy/vacancy.component'
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MessagesService } from './shared/messages/messages.service'
     GridComponent,
     SignupComponent,
     ProfileComponent,
+    VacancyComponent,
   ],
   imports: [
     BrowserModule,

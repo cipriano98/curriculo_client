@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilService } from 'src/app/shared/utils.service';
 
 export interface User {
   avatar: string
@@ -19,12 +20,17 @@ export interface Vacancy {
   styleUrls: ['./vacancy.component.scss']
 })
 export class VacancyComponent implements OnInit {
+ 
+  constructor(
+    private readonly utils: UtilService
+  ) { }
 
+  
   avatarDefault = 'http'
   vacancies: Vacancy[] = [
     {
       codeVacancy: 1,
-      user: { avatar: 'https://www.ecp.org.br/wp-content/uploads/2017/12/default-avatar-1.png' },
+      user: { avatar: this.utils.getSessao('avatar') },
       logo: 'http://zeta.com.br/wp-content/uploads/2020/10/Design-sem-nome-39.png',
       office: 'Desenvolvedor(a)',
       description: 'In a purus sollicitudin, ultrices ligula vitae, tempor turpis. Aenean commodo ligula et elit rhoncus, quis porttitor nisi blandit. Phasellus congue odio vitae scelerisque fringilla. Maecenas consequat leo eu quam maximus, non finibus magna congue. Nunc vehicula nibh eget sapien ornare ornare a vel mi.',
@@ -143,8 +149,6 @@ export class VacancyComponent implements OnInit {
       name: 'Dell',
     },
   ]
-
-  constructor() { }
 
   ngOnInit(): void {
   }

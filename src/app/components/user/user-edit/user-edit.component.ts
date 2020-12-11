@@ -15,9 +15,10 @@ export class UserEditComponent implements OnInit {
 
   user: User
   id: number
+  avatarURL: string
   existsEmail: boolean = false
-  usuarioForm: FormGroup
-  loading: boolean = false
+  userForm: FormGroup
+  loading: boolean = false // ! Não está em uso
   alterarSenha: boolean = false
   campoSenha: string
   campoRedigiteSenha: string
@@ -35,12 +36,12 @@ export class UserEditComponent implements OnInit {
     this.id = this.data.idEdicao
     this.user = new User()
     this.initialForm()
-
     if (this.id !== 0) {
       this.usuarioService.getBasePorId(this.id)
         .subscribe(
           dados => {
             this.atribuirDados(dados)
+            this.avatarURL = dados['avatar']
           },
           error => {
             console.dir(error)
@@ -52,16 +53,16 @@ export class UserEditComponent implements OnInit {
   atribuirDados(user: User) {
     this.user = user
     this.initialForm()
-    this.usuarioForm.patchValue(this.user)
+    this.userForm.patchValue(this.user)
 
   }
 
   desabilitarOnSubmit() {
     if (!this.alterarSenha) {
-      if (this.usuarioForm.controls.email.status === 'INVALID' || this.existsEmail) return true
+      if (this.userForm.controls.email.status === 'INVALID' || this.existsEmail) return true
       return false
     }
-    if (this.usuarioForm.invalid || this.existsEmail || !this.camposSenhaIguais) return true
+    if (this.userForm.invalid || this.existsEmail || !this.camposSenhaIguais) return true
     return false
   }
 
@@ -71,9 +72,9 @@ export class UserEditComponent implements OnInit {
   }
 
   getFormEmailError() {
-    if (this.usuarioForm.controls.email.value === '') return 'Digite seu melhor email'
+    if (this.userForm.controls.email.value === '') return 'Digite seu melhor email'
 
-    if (this.usuarioForm.controls.email.status === 'INVALID') return 'Digite um email válido'
+    if (this.userForm.controls.email.status === 'INVALID') return 'Digite um email válido'
 
     return this.existsEmail ? 'Esse email já existe em nossa base de dados' : ''
   }
@@ -81,7 +82,7 @@ export class UserEditComponent implements OnInit {
   getFormPasswordError() {
     // console.log('lenght', (this.usuarioForm.controls.newPassword.value).lenght)
 
-    if (this.usuarioForm.controls.newPassword.status === 'INVALID') return 'Digite uma senha'
+    if (this.userForm.controls.newPassword.status === 'INVALID') return 'Digite uma senha'
 
     // if (this.usuarioForm.controls.newPassword.value.lenght < 6) return 'Sua senha deve possuir pelo menos 6 caracteres'
 
@@ -90,18 +91,18 @@ export class UserEditComponent implements OnInit {
 
   permitirAlterarSenha() {
     // console.log(this.alterarSenha)
-    if (this.alterarSenha) this.usuarioForm.controls.password.setValue('')
-    else this.usuarioForm.controls.password.setValue(this.usuarioForm.value.password)
+    /* if (this.alterarSenha) this.userForm.controls.secret.setValue('')
+    else */ this.userForm.controls.secret.setValue(this.userForm.value.secret)
     return this.alterarSenha = !this.alterarSenha
   }
 
-  async verificaEmailExiste(formularioEmail) {
+  verificaEmailExiste(formEmail: string) {
     // VERIFICAR se o formularioEmail foi alterado. Só depois buscar no banco
 
-    if (this.usuarioForm.controls.email.valid) {
-      return this.usuarioService.getBasePorEmail(formularioEmail).subscribe(
+    if (this.userForm.controls.email.valid) {
+      return this.usuarioService.getBasePorEmail(formEmail).subscribe(
         user => {
-          if (user.email === this.usuarioForm.value.email && user.id !== this.id) this.existsEmail = true
+          if (user.email === this.userForm.value.email && user.id !== this.id) this.existsEmail = true
           else if (user.email === null) this.existsEmail = false
         }
       )
@@ -110,19 +111,52 @@ export class UserEditComponent implements OnInit {
     return ''
   }
 
+  fetchCEP(formCEP: string) {
+    formCEP = String(formCEP)
+    this.usuarioService.fetchCEP(formCEP).subscribe(
+      cep => {
+        console.dir(cep)
+      }
+    )
+  }
+
   onSubmit() {
     if (!this.existsEmail) {
-      this.user = Object.assign(this.user, this.usuarioForm.value)
+      this.user = Object.assign(this.user, this.userForm.value)
       this.usuarioService.saveBase(this.user).subscribe(() => { })
-    } else this.utils.emitirErrosSubmit(this.usuarioForm)
+    } else this.utils.emitirErrosSubmit(this.userForm)
   }
 
   initialForm() {
-    this.usuarioForm = this.fb.group({
+    this.userForm = this.fb.group({
       id: [undefined],
-      email: ['', Validators.email],
-      password: ['', Validators.required],
+      gender: ['', Validators.required],
+      fullname: ['', Validators.required],
+      email: ['', Validators.required],
+      secret: ['', Validators.required],
+      cpf: ['', Validators.required],
+      nickname: [`Novo-Usuario-${Math.random().toString(36).substring(8)}`],
       newPassword: ['', Validators.required],
+      datebirth: [''],
+      avatar: [''],
+      preferencialname: [''],
+      // Address: {
+      //   create: {
+      //     name: [''],
+      //     cep: [''],
+      //     logradouro: [''],
+      //     bairro: [''],
+      //     cidade: [''],
+      //     state: [''],
+      //   }
+      // },
     })
   }
+
+  randomNickname() {
+    const randomName = this.userForm.get('nickname').value?.split('-')[0] || this.userForm.get('email').value?.split('@')[0]
+    const random = Math.random().toString(36).substring(8)
+    this.userForm.get('nickname').setValue(`${randomName}-${random}`)
+  }
+
 }

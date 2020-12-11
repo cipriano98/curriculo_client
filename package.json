@@ -10,6 +10,7 @@
     "ng": "ng",
     "start": "ng s --configuration=production",
     "serve": "firebase serve",
+    "deploy:no:build": "firebase deploy -f",
     "deploy": "yarn build && firebase deploy -f",
     "dev": "ng s --port 5001",
     "build:dev": "ng build",

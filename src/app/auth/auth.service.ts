@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import * as moment from 'moment'
 import { BehaviorSubject } from 'rxjs'
-
 import { catchError, tap } from 'rxjs/operators'
+
 import { environment } from '../../environments/environment'
 import { UtilService } from '../shared/utils.service'
 import { Auth } from './auth'
@@ -40,15 +40,18 @@ export class AuthService {
       .pipe(
         tap((response) => {
           delete signin.secret
+          console.dir('response');
+          alert(JSON.stringify(response));
           console.log(`response → ${JSON.stringify(response)}`)
 
           if (response?.token) {
             localStorage.setItem('currentUser', JSON.stringify({
               id: response._id,
+              avatar: response.avatar,
               email: response.email,
               role: response.role,
               name:  response.name,
-              token: response.token
+              token: response.token,
             }))
 
             const expiresAt = moment().locale(this.utils.getLanguage()).add(parseInt(response.expiresIn.replace('h', '')), 'h').calendar()

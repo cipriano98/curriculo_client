@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -11,10 +11,7 @@ environment.production ?
   \nCurrículo Único
   Com um único cadastro seu currículo está em todas as plataformas
   \n\n\n`)
-  : (
-    console.log('Localhost'),
-    console.log("LocalStorage:", JSON.parse(localStorage.getItem('currentUser')))
-  )
+  : console.log("LocalStorage:", JSON.parse(localStorage.getItem('currentUser')))
 
 @Injectable()
 export class CustomHttpInterceptorService implements HttpInterceptor {

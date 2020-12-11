@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { UtilService } from '../../shared/utils.service';
@@ -16,6 +16,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
+
 
   constructor(
     private http: HttpClient,
@@ -55,21 +56,18 @@ export class UserService {
     return this.http.get<any[]>(this.api + '/user')
       .pipe(
         tap(user => {
-          // console.dir(user)
-          this.ListInitial = user;
-          this.ListInitialSource.next(this.ListInitial);
-          console.log(`Loaded users`);
+          this.ListInitial = user
+          this.ListInitialSource.next(this.ListInitial)
         }),
         catchError(this.utils.handleError('getBase', []))
-      );
+      )
   }
 
   deleteBase(id: number): Observable<User> {
     const url = `${this.api + '/user'}/${id}`;
     return this.http.delete<User>(url, httpOptions).pipe(
       tap(user => {
-        this.del(id);
-        console.log(`Deleted user`);
+        this.del(id)
       }),
       catchError(this.utils.handleError<User>('deleteUser'))
     );
@@ -99,13 +97,34 @@ export class UserService {
     );
   }
 
+  fetchCEP(cep): Observable<any> {
+    console.dir(cep)
+
+    const url = `https://api.postmon.com.br/v1/cep/${cep}`
+    console.dir(url);
+    return this.http.get<any>(url).pipe(
+      tap(
+        cep => {
+          console.dir(cep)
+          if (cep != { error: true })
+            console.log('Este cep existe e será carregado')
+          else
+            console.log(`O cep informado não foi reconhecido pelo sistema`)
+        },
+        error => console.log(`Erro na função fetchCEP → ${error}`)
+      ),
+      catchError(this.utils.handleError<any>(`fetchCEP cep=${cep}`))
+    );
+  }
+
   saveBase(user: User): Observable<User> {
     if (user.id) {
-      return this.http.put<User>(this.api + '/user/' + user.id, user, httpOptions).pipe(
+      const UserId = user.id
+      delete user.id
+      delete user['newPassword']
+      return this.http.put<User>(`${this.api}/user/${UserId}`, user, httpOptions).pipe(
         tap((user: User) => {
-          console.log('User changed:', user);
-          this.save(user);
-          console.log(`Updated user`);
+          this.save(user)
         }),
         catchError(this.utils.handleError<User>('addUser'))
       );

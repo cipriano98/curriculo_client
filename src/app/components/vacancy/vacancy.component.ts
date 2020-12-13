@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from 'src/app/shared/utils.service';
+import { VacancyEditComponent } from './vacancy-edit/vacancy-edit.component';
 
 export interface User {
   avatar: string
@@ -160,6 +161,10 @@ Eu vi uma vaga na ${name} de ${office} e lembrei de você. Espero que consiga, b
 Acesse: https://unique-curriculum.web.app e pesquise pelo código de vaga ${codeVacancy}
 `)
     console.dir(vacancy);
+  }
+
+  edit(id) {
+    this.utils.openEditModal(VacancyEditComponent, id);
   }
 
 }

@@ -26,7 +26,8 @@ import { MaterialModule } from './material/material.module'
 import { CustomHttpInterceptorService } from './noop-interceptor'
 import { BotoesGridComponent } from './shared/botoes-grid/botoes-grid.component'
 import { MessagesService } from './shared/messages/messages.service';
-import { VacancyComponent } from './components/vacancy/vacancy.component'
+import { VacancyComponent } from './components/vacancy/vacancy.component';
+import { VacancyEditComponent } from './components/vacancy/vacancy-edit/vacancy-edit.component'
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { VacancyComponent } from './components/vacancy/vacancy.component'
     SignupComponent,
     ProfileComponent,
     VacancyComponent,
+    VacancyEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +76,7 @@ import { VacancyComponent } from './components/vacancy/vacancy.component'
     BotoesGridComponent,
     AgencyEditComponent,
     UserEditComponent,
+    VacancyEditComponent,
   ],
 })
 export class AppModule { }

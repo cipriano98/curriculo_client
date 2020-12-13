@@ -23,6 +23,7 @@ export class UserEditComponent implements OnInit {
   campoSenha: string
   campoRedigiteSenha: string
   camposSenhaIguais: boolean
+  step = 0
 
   constructor(
     public dialogRef: MatDialogRef<UserEditComponent>,
@@ -34,7 +35,6 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.data.idEdicao
-    this.user = new User()
     this.initialForm()
     if (this.id !== 0) {
       this.usuarioService.getBasePorId(this.id)
@@ -50,11 +50,22 @@ export class UserEditComponent implements OnInit {
     }
   }
 
+  setStep(index: number) {
+    this.step = index
+  }
+
+  nextStep() {
+    this.step++
+  }
+
+  prevStep() {
+    this.step--
+  }
+
   atribuirDados(user: User) {
     this.user = user
     this.initialForm()
     this.userForm.patchValue(this.user)
-
   }
 
   desabilitarOnSubmit() {
@@ -123,7 +134,7 @@ export class UserEditComponent implements OnInit {
   onSubmit() {
     if (!this.existsEmail) {
       this.user = Object.assign(this.user, this.userForm.value)
-      this.usuarioService.saveBase(this.user).subscribe(() => { })
+      this.usuarioService.saveBase(this.user).subscribe(() => { this.dialogRef.close() })
     } else this.utils.emitirErrosSubmit(this.userForm)
   }
 

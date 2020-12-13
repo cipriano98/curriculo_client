@@ -5,178 +5,231 @@
     <img *ngIf="avatarURL" mat-card-avatar [src]="avatarURL">
   </Span>
 </div>
+<div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
 
-<mat-dialog-content>
+  <mat-dialog-content>
 
-  <form [formGroup]="userForm" class="container" fx #f="ngForm" novalidate>
-    <div fxLayout="column" fxLayoutAlign="start">
-      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="2.5%">
+    <mat-card #Form>
+      <form [formGroup]="userForm" class="container" fx #f="ngForm" novalidate>
 
-        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-          <!-- TODO https://www.positronx.io/angular-8-show-image-preview-with-reactive-forms-tutorial/ -->
-          <!-- <input type="file" accept="image/*" (change)="showPreview($event)" /> -->
-          <mat-label>Link do avatar</mat-label>
-          <input matInput placeholder="Full name" formControlName="avatar" required />
-        </mat-form-field>
+        <mat-accordion>
 
-        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-          <mat-label>Full name</mat-label>
-          <input matInput placeholder="Full name" formControlName="fullname" required />
-        </mat-form-field>
+          <mat-expansion-panel #PersonalData [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
 
-        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-          <mat-label>Email</mat-label>
-          <input matInput placeholder="email" formControlName="email"
-            (change)="verificaEmailExiste($event.target.value)" required />
-          <mat-hint class="hintError">
-            {{getFormEmailError()}}
-          </mat-hint>
-        </mat-form-field>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Personal data
+              </mat-panel-title>
+              <mat-panel-description>
+                Type your name and age
+                <mat-icon>account_circle</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
 
-        <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-          fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-          <mat-label>Preferencial name</mat-label>
-          <input matInput placeholder="Preferencial name" formControlName="preferencialname" required />
-        </mat-form-field>
+            <div #PersonalDataContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
 
-        <span [hidden]="!id || alterarSenha">
-          <button mat-flat-button (click)="permitirAlterarSenha()" color="primary">
-            <mat-icon>edit</mat-icon>
-            Alterar senha
-          </button>
-        </span>
+              <mat-form-field #linkAvatar appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <!-- TODO https://www.positronx.io/angular-8-show-image-preview-with-reactive-forms-tutorial/ -->
+                <!-- <input type="file" accept="image/*" (change)="showPreview($event)" /> -->
+                <mat-label>Link do avatar</mat-label>
+                <input matInput placeholder="Full name" formControlName="avatar" required />
+              </mat-form-field>
 
-        <!-- <mat-form-field #password>
+              <mat-form-field #fullname appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label>Full name</mat-label>
+                <input matInput placeholder="Full name" formControlName="fullname" required />
+              </mat-form-field>
 
-          <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'"
-            [placeholder]="hidePassword ? '********' : 'Password'" formControlName="secret" required>
+              <mat-form-field #email appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="email" formControlName="email"
+                  (change)="verificaEmailExiste($event.target.value)" required />
+                <mat-hint class="hintError">
+                  {{getFormEmailError()}}
+                </mat-hint>
+              </mat-form-field>
 
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hidePassword" (keydown.enter)="hidePassword = !hidePassword">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
+              <mat-form-field #preferencialname appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label>Preferencial name</mat-label>
+                <input matInput placeholder="Preferencial name" formControlName="preferencialname" required />
+              </mat-form-field>
 
-          <mat-error *ngIf="isFieldInvalid('secret')">
-            Por favor informe sua senha
-          </mat-error>
-        </mat-form-field> -->
+              <span [hidden]="!id || alterarSenha">
+                <button mat-flat-button (click)="permitirAlterarSenha()" color="primary">
+                  <mat-icon>edit</mat-icon>
+                  Alterar senha
+                </button>
+              </span>
 
-        <mat-form-field *ngIf="alterarSenha || !id"
-          (change)="campoSenha = $event.target.value; verificaCamposSenhaIguais()" appearance="standard"
-          [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%"
-          fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-          <mat-label *ngIf="!id">Senha</mat-label>
-          <mat-label *ngIf="alterarSenha">Nova senha</mat-label>
-          <input matInput type="password" formControlName="newPassword" required />
-          <mat-hint class="hintError">
-            {{getFormPasswordError()}}
-          </mat-hint>
-        </mat-form-field>
+              <!-- 
+              <mat-form-field #password>
 
-        <mat-form-field *ngIf="alterarSenha || !id" appearance="standard" [floatLabel]="true"
-          [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%"
-          fxFlex.xl="24.6%">
-          <mat-label *ngIf="!id">Redigite a senha</mat-label>
-          <mat-label *ngIf="alterarSenha">Redigite a nova senha</mat-label>
-          <input matInput type="password" formControlName="secret"
-            (keyup)="campoRedigiteSenha = $event.target.value; verificaCamposSenhaIguais()" required />
-          <mat-error>
-            Digite novamente sua senha
-          </mat-error>
-          <mat-hint *ngIf="!camposSenhaIguais" class="hintError">
-            Os campos não coincidem
-          </mat-hint>
-        </mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput [type]="hidePassword ? 'password' : 'text'"
+                  [placeholder]="hidePassword ? '********' : 'Password'" formControlName="secret" required>
+          
+                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hidePassword" (keydown.enter)="hidePassword = !hidePassword">
+                  <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+          
+                <mat-error *ngIf="isFieldInvalid('secret')">
+                  Por favor informe sua senha
+                </mat-error>
+              </mat-form-field> 
+              -->
 
-        <mat-form-field #nickname>
+              <mat-form-field #newPassword *ngIf="alterarSenha || !id"
+                (change)="campoSenha = $event.target.value; verificaCamposSenhaIguais()" appearance="standard"
+                [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%"
+                fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label *ngIf="!id">Senha</mat-label>
+                <mat-label *ngIf="alterarSenha">Nova senha</mat-label>
+                <input matInput type="password" formControlName="newPassword" required />
+                <mat-hint class="hintError">
+                  {{getFormPasswordError()}}
+                </mat-hint>
+              </mat-form-field>
 
-          <mat-label>Nickname</mat-label>
-          <span matPrefix>@ &nbsp;</span>
-          <input matInput placeholder="FulanoJr" formControlName="nickname">
-          <mat-icon matSuffix (click)="randomNickname()">sync</mat-icon>
+              <mat-form-field #secret *ngIf="alterarSenha || !id" appearance="standard" [floatLabel]="true"
+                [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%"
+                fxFlex.xl="24.6%">
+                <mat-label *ngIf="!id">Redigite a senha</mat-label>
+                <mat-label *ngIf="alterarSenha">Redigite a nova senha</mat-label>
+                <input matInput type="password" formControlName="secret"
+                  (keyup)="campoRedigiteSenha = $event.target.value; verificaCamposSenhaIguais()" required />
+                <mat-error>
+                  Digite novamente sua senha
+                </mat-error>
+                <mat-hint *ngIf="!camposSenhaIguais" class="hintError">
+                  Os campos não coincidem
+                </mat-hint>
+              </mat-form-field>
 
-        </mat-form-field>
+              <mat-form-field #nickname>
 
-        <mat-card #Address>
-          <mat-card-title>Endereço</mat-card-title>
-          <mat-card-content fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+                <mat-label>Nickname</mat-label>
+                <span matPrefix>@ &nbsp;</span>
+                <input matInput placeholder="FulanoJr" formControlName="nickname">
+                <mat-icon matSuffix (click)="randomNickname()">sync</mat-icon>
 
-            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Nome</mat-label>
-              <input matInput placeholder="nome" required />
-              <mat-hint class="hintError">
-                <!-- {{getFormCEPError()}} -->
-              </mat-hint>
-            </mat-form-field>
+              </mat-form-field>
 
-            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label></mat-label>
-              <input matInput placeholder="cep" required />
-              <!-- (change)="fetchCEP($event.target.value)" -->
-              <mat-hint class="hintError">
-                <!-- {{getFormCEPError()}} -->
-              </mat-hint>
-            </mat-form-field>
+              <mat-action-row>
+                <button mat-button color="primary" (click)="nextStep()">Next</button>
+              </mat-action-row>
 
-            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label></mat-label>
-              <input matInput placeholder="cep" required />
-              <mat-hint class="hintError">
-                <!-- {{getFormCEPError()}} -->
-              </mat-hint>
-            </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label></mat-label>
-              <input matInput placeholder="cep" required />
-              <mat-hint class="hintError">
-                <!-- {{getFormCEPError()}} -->
-              </mat-hint>
-            </mat-form-field>
+          </mat-expansion-panel>
 
-            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label></mat-label>
-              <input matInput placeholder="cep" required />
-              <mat-hint class="hintError">
-                <!-- {{getFormCEPError()}} -->
-              </mat-hint>
-            </mat-form-field>
+          <mat-expansion-panel #Address [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
 
-            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
-              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label></mat-label>
-              <input matInput placeholder="cep" required />
-              <mat-hint class="hintError">
-                <!-- {{getFormCEPError()}} -->
-              </mat-hint>
-            </mat-form-field>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Address
+              </mat-panel-title>
+              <mat-panel-description>
+                Enter the Address
+                <mat-icon>map</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
 
-          </mat-card-content>
-        </mat-card>
+            <div #AddressContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
 
-      </div>
-    </div>
-  </form>
+              <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="nome" required />
+              </mat-form-field>
 
-</mat-dialog-content>
+              <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label></mat-label>
+                <input matInput placeholder="cep" required />
+              </mat-form-field>
 
-<mat-dialog-actions fxLayoutAlign="end end">
+              <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label></mat-label>
+                <input matInput placeholder="cep" required />
+              </mat-form-field>
 
-  <button mat-dialog-close mat-mini-fab fxFlexOffset="10px" color="theme" matTooltip="Close">
-    <mat-icon>close</mat-icon>
-  </button>
-  <button [disabled]="desabilitarOnSubmit()" mat-mini-fab (click)="onSubmit()" type="submit" color="primary"
-    matTooltip="Save">
-    <mat-icon>check</mat-icon>
-  </button>
+              <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label></mat-label>
+                <input matInput placeholder="cep" required />
+              </mat-form-field>
 
-</mat-dialog-actions>
+              <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label></mat-label>
+                <input matInput placeholder="cep" required />
+              </mat-form-field>
+
+              <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+                fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+                <mat-label></mat-label>
+                <input matInput placeholder="cep" required />
+              </mat-form-field>
+
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                <button mat-button color="primary" (click)="nextStep()">Next</button>
+              </mat-action-row>
+
+            </div>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel #Contact [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Day of the trip
+              </mat-panel-title>
+              <mat-panel-description>
+                Inform the date you wish to travel
+                <mat-icon>list_alt</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div #ContactContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+
+              <mat-form-field>
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+              </mat-form-field>
+              <mat-datepicker #picker></mat-datepicker>
+
+              <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                <button mat-button color="primary" (click)="nextStep()">End</button>
+              </mat-action-row>
+
+            </div>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </form>
+    </mat-card>
+
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayoutAlign="end end">
+
+    <button mat-dialog-close mat-mini-fab fxFlexOffset="10px" color="theme" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button [disabled]="desabilitarOnSubmit()" mat-mini-fab (click)="onSubmit()" type="submit" color="primary"
+      matTooltip="Save">
+      <mat-icon>check</mat-icon>
+    </button>
+
+  </mat-dialog-actions>

@@ -38,22 +38,23 @@ export class UserService {
     this.ListInitial = this.ListInitial.filter(elementListInitial => {
       return elementListInitial.id != id;
     });
-    this.ListInitialSource.next(this.ListInitial);
+    this.ListInitialSource.next(this.ListInitial)
   }
 
   add(userSave: User) {
     this.ListInitial.push(userSave);
-    this.ListInitialSource.next(this.ListInitial);
+    this.ListInitialSource.next(this.ListInitial)
   }
 
   save(userSave: User) {
     this.listUpdates = [];
     this.listUpdates.push(userSave);
-    this.listUpdatesSource.next(this.listUpdates);
+    this.listUpdatesSource.next(this.listUpdates)
   }
 
-  getBase(): Observable<any[]> {
-    return this.http.get<any[]>(this.api + '/user')
+  getBase(typeUser: string = "all"): Observable<any[]> {
+    const urlTypeUser = typeUser === "all" ? "" : typeUser
+    return this.http.get<any[]>(`${this.api}/user/${urlTypeUser}`)
       .pipe(
         tap(user => {
           this.ListInitial = user
@@ -118,6 +119,9 @@ export class UserService {
   }
 
   saveBase(user: User): Observable<User> {
+    console.dir(user)
+    delete user['Curriculum']
+    delete user['Profile']
     if (user.id) {
       const UserId = user.id
       delete user.id
@@ -127,16 +131,47 @@ export class UserService {
           this.save(user)
         }),
         catchError(this.utils.handleError<User>('addUser'))
-      );
+      )
     } else {
       return this.http.post<User>(this.api + '/user/signup', user, httpOptions).pipe(
         tap((user: User) => {
-          console.log('User created:', user);
-          this.add(user);
-          console.log(`Added user`);
+          console.log('User created:', user)
+          this.add(user)
+          console.log(`Added user`)
         }),
         catchError(this.utils.handleError<User>('addUser'))
-      );
+      )
+    }
+  }
+
+  saveBaseVacancy(vacancy): Observable<User> {
+    function buscarAvatar() {
+      
+    }
+    vacancy.userid = this.utils.getSessao('id')
+    vacancy.avatar = this.utils.getSessao('avatar') || buscarAvatar()
+    console.dir(vacancy)
+    delete vacancy['Curriculum']
+    delete vacancy['Profile']
+    if (vacancy.id) {
+      const UserId = vacancy.id
+      delete vacancy.id
+      delete vacancy['newPassword']
+      return this.http.put<User>(`${this.api}/user/${UserId}`, vacancy, httpOptions).pipe(
+        tap((user: User) => {
+          this.save(user)
+        }),
+        catchError(this.utils.handleError<User>('addUser'))
+      )
+    } else {
+      return this.http.post<User>(this.api + '/user/signup', vacancy, httpOptions).pipe(
+        tap((user: User) => {
+          console.log('User created:', user)
+          this.add(user)
+          console.log(`Added user`)
+        }),
+        catchError(this.utils.handleError<User>('addUser'))
+      )
     }
   }
 

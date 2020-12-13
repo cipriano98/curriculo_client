@@ -14,6 +14,7 @@ export class GridComponent implements OnInit {
 
   public gridOptions: GridOptions
   @Input() public entity: string
+  @Input() public typeUser?: string
   @Input() public entityEdit: any
   @Input() public entityService: any
   @Input() public columns: ColDef[]
@@ -186,7 +187,8 @@ export class GridComponent implements OnInit {
   }
 
   onGridReady(params) {
-    this.entityService.getBase().subscribe(entity => { });
+    if(this.typeUser) this.entityService.getBase(this.typeUser).subscribe(entity => { })
+    else this.entityService.getBase().subscribe(entity => { })
     this.entityService.ListInitial$.subscribe(
       entity => {
         params.api.setRowData(entity);

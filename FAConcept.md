@@ -13,7 +13,7 @@ A aplicação definida deve contemplar uma Single Page Application (SPA) e deve 
 
 2) Pesquisa: consiste em uma barra de pesquisa que permite filtrar as entidades visualizadas (funcionalidade 1). Esse filtro pode ser definido por vários atributos ou relacionamentos da entidade.
 
-3) Funcionalidade de negócio: consiste em uma funcionalidade para auxiliar o usuário na realização do negócio em si. Por exemplo, no caso do e-commerce, a funcionalidade de negócio poderia ser venda de produtos representado por um carrinho de compras. 
+3) Funcionalidade de negócio: consiste em uma funcionalidade para auxiliar o usuário na realização do negócio em si. Por exemplo, no caso do e-commerce, a funcionalidade de negócio poderia ser venda de produtos representado por um carrinho de compras.
 
 4) Auto cadastro de usuários-fim e Login: todos os usuários devem fazer login para realizar as funcionalidades. Qualquer pessoa pode acessar o sistema para realizar o auto cadastro. As informações necessárias para o usuário se cadastrar são pelo menos: usuário e senha. Mas sugere-se também: RG, nome, e-mail, endereço (preferencialmente completo, inclusive com CEP) e telefone. Os usuários cadastrados poderão editar seu perfil.
 
@@ -45,7 +45,7 @@ Conceito A:
  - [ ] Aplicação totalmente funcional, com as funcionalidades 1 a 4 realizadas completamente;
  - [x] Utilização de JWT e segurança tanto no front-ent quanto no back-end;
  - [ ] A funcionalidade 1 deve ter suporte à imagem dos produtos e ser disposta em Grids Responsivas (ou trabalhar com Mapas);
- - [ ] Utilização de um sistema de controle de versão (ex: git) e de um ambiente de colaboração e gerenciamento de código baseado nesse controle de versão (ex: github, bitbucket).
+ - [x] Utilização de um sistema de controle de versão (ex: git) e de um ambiente de colaboração e gerenciamento de código baseado nesse controle de versão (ex: github, bitbucket).
 
 ´´´ bash
 Exercício

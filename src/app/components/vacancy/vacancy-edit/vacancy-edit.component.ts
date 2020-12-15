@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UtilService } from 'src/app/shared/utils.service';
-import { UserService } from '../../user/user.service';
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormBuilder, FormGroup } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { UtilService } from 'src/app/shared/utils.service'
+
+import { VacancyService } from '../vacancy.service'
 
 @Component({
   selector: 'app-vacancy-edit',
@@ -12,7 +13,7 @@ import { UserService } from '../../user/user.service';
 export class VacancyEditComponent implements OnInit {
 
   id: number
-  vacancy: any
+  vacancy: any[]
   vacancyForm: FormGroup
 
 
@@ -20,16 +21,18 @@ export class VacancyEditComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<VacancyEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private usuarioService: UserService,
+    private vacancyService: VacancyService,
     private fb: FormBuilder,
     private utils: UtilService,
   ) { }
 
   ngOnInit(): void {
     this.id = this.data.idEdicao
+    console.dir(this.data.idEdicao);
+    console.dir(this.id);
     this.initialForm()
     if (this.id !== 0) {
-      this.usuarioService.getBasePorId(this.id)
+      this.vacancyService.getBasePorId(this.id)
         .subscribe(
           dados => {
             this.atribuirDados(dados)
@@ -49,27 +52,22 @@ export class VacancyEditComponent implements OnInit {
 
   initialForm() {
     this.vacancyForm = this.fb.group({
-      id: [undefined],
-      active: [''],
+      codeVacancy: [undefined],
+      active: [true],
       name: [''],
       office: [''],
       logo: [''],
       description: [''],
     })
   }
-
-
-  async SaveVacancy() {
-  }
   
   onSubmit() {
     if (this.vacancyForm.valid) {
-      this.vacancy = Object.assign(this.vacancy, this.vacancyForm.value)
-      this.usuarioService.saveBaseVacancy(this.vacancy).subscribe(() => { this.dialogRef.close() })
+      console.dir(this.vacancyForm.value)
+      this.vacancyService.saveBase(this.vacancyForm.value).subscribe(() => { this.dialogRef.close() })
     } else {
       this.utils.emitirErrosSubmit(this.vacancyForm)
     }
-
   }
   
 }

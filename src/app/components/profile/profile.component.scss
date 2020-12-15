@@ -1,0 +1,17 @@
+.hintError {
+    color: red;
+}
+
+mat-dialog-content {
+    height: 100%;
+}
+
+.mat-expansion-panel-header-title {
+  flex-basis: 0
+}
+
+.mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items    : center;
+    flex-basis: 0
+}

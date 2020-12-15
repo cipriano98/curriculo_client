@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { CellRange, ColDef, GetContextMenuItemsParams, GridOptions, MenuItemDef } from 'ag-grid-community'
+import { CellEvent, CellRange, ColDef, GetContextMenuItemsParams, GridOptions, MenuItemDef } from 'ag-grid-community'
 import { BotoesGridComponent } from 'src/app/shared/botoes-grid/botoes-grid.component'
 import { UtilService } from 'src/app/shared/utils.service'
 
@@ -13,6 +13,9 @@ import 'ag-grid-enterprise'
 export class GridComponent implements OnInit {
 
   public gridOptions: GridOptions
+  updatingTable: boolean = false
+  gridParams: CellEvent
+
   @Input() public entity: string
   @Input() public typeUser?: string
   @Input() public entityEdit: any
@@ -187,7 +190,8 @@ export class GridComponent implements OnInit {
   }
 
   onGridReady(params) {
-    if(this.typeUser) this.entityService.getBase(this.typeUser).subscribe(entity => { })
+    this.gridParams = params
+    if (this.typeUser) this.entityService.getBase(this.typeUser).subscribe(entity => { })
     else this.entityService.getBase().subscribe(entity => { })
     this.entityService.ListInitial$.subscribe(
       entity => {
@@ -204,6 +208,31 @@ export class GridComponent implements OnInit {
 
   delete(id: number | string): void {
     this.entityService.deleteBase(id).subscribe(() => { });
+  }
+
+  refresh() {
+    this.updatingTable = true
+    if (this.typeUser) this.entityService.getBase(this.typeUser).subscribe(entity => { })
+    else this.entityService.getBase().subscribe(entity => { })
+    const api = this.gridParams.api
+
+    for (let i = 0; i < api.getDisplayedRowCount(); i++) {
+      const milliseconds = i * 100
+      const rowNodes = [api.getDisplayedRowAtIndex(i)]
+      const params = {
+        force: true,
+        rowNodes: rowNodes,
+      }
+
+      setTimeout(function () {
+        api.refreshCells(params);
+      }, milliseconds)
+
+    }
+
+    setTimeout(() => {
+      this.updatingTable = false
+    }, api.getDisplayedRowCount() * 110)
   }
 
 }

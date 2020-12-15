@@ -78,7 +78,6 @@ export class UtilService {
       height: '90%',
       data: { idEdicao: id }
     }
-    console.dir(configuration.data)
     const dialogRef = this.dialog.open(componente, configuration);
   }
   

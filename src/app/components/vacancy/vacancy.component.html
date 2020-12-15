@@ -1,19 +1,29 @@
-<div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="2.5%">
+<div *ngIf="vacancies.length" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="2.5%">
     <mat-toolbar class="transparent">
 
         <h1>Vagas</h1>
         <span class="toll-spacer"></span>
         <button mat-mini-fab color="primary" (click)="edit(0)">
-          <mat-icon>add</mat-icon>
+            <mat-icon>add</mat-icon>
         </button>
-      
-      </mat-toolbar>
+
+    </mat-toolbar>
     <div *ngFor="let vacancy of vacancies">
-        
+
         <mat-card class="card-vacancy">
             <mat-card-header>
-                <img mat-card-avatar [src]="vacancy.user.avatar">
-                <mat-card-title>{{vacancy.name}}</mat-card-title>
+                <img *ngIf="vacancy.avatar" mat-card-avatar [src]="vacancy.avatar">
+                <img *ngIf="!vacancy.avatar" mat-card-avatar [src]="avatarDefault">
+                <mat-card-title>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div>
+                            {{vacancy.name}}
+                        </div>
+                        <div class="code-vacancy">
+                            Nº: {{vacancy.codeVacancy}}
+                        </div>
+                    </div>
+                </mat-card-title>
                 <mat-card-subtitle>{{vacancy.office}}</mat-card-subtitle>
             </mat-card-header>
             <div class="img">
@@ -23,11 +33,15 @@
                 <p>{{vacancy.description}}</p>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-button>I WANT</button>
+                <button mat-button (click)="iWant(vacancy)">I WANT</button>
                 <button mat-button (click)="shareVacancy(vacancy)">SHARE</button>
+                <button *ngIf="sessaoId === vacancy.userid" mat-button (click)="edit(vacancy.codeVacancy)">EDIT</button>
             </mat-card-actions>
         </mat-card>
-    
-    </div>
 
+    </div>
+</div>
+
+<div *ngIf="!vacancies.length" class="loading-page" fxLayout="row" fxLayoutAlign="center center">
+    <div class="spinner"></div>
 </div>

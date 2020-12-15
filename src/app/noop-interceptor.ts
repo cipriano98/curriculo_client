@@ -21,8 +21,9 @@ export class CustomHttpInterceptorService implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    req = req.clone({ headers: req.headers.set('x-access-token', String(this.utils.getSessao('token'))) })
+    console.dir(req.urlWithParams)
+    if (!req.urlWithParams.includes('https://viacep.com.br'))
+      req = req.clone({ headers: req.headers.set('x-access-token', this.utils.getSessao('token')) })
 
     return next.handle(req).pipe(
       map((res: HttpEvent<any>) => { return res }),
@@ -37,9 +38,9 @@ export class CustomHttpInterceptorService implements HttpInterceptor {
           }
         }
         this.utils.handleError(mensagem)
-        return throwError(mensagem);
+        return throwError(mensagem)
       })
-    );
+    )
   }
 
 }

@@ -1,6 +1,9 @@
 <mat-toolbar class="transparent">
 
   <h1>{{entity}}</h1>
+  <button mat-icon-button color="theme" class="update-table" (click)="refresh()">
+    <img [class]="updatingTable ? 'animate-spin' : ''" src="../assets/icons/updatingTable.svg" width="25px">
+  </button>
   <span class="toll-spacer"></span>
   <button mat-mini-fab color="primary" (click)="edit(0)">
     <mat-icon>add</mat-icon>

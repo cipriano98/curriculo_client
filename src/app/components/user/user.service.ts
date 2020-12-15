@@ -1,16 +1,16 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Subject } from 'rxjs'
+import { Observable } from 'rxjs'
+import { catchError, map, tap } from 'rxjs/operators'
+import { environment } from 'src/environments/environment'
 
-import { UtilService } from '../../shared/utils.service';
-import { User } from './user';
+import { UtilService } from '../../shared/utils.service'
+import { User } from './user'
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+}
 
 @Injectable({
   providedIn: 'root'
@@ -23,32 +23,32 @@ export class UserService {
     private utils: UtilService
   ) { }
 
-  private api = environment.curriculumApi;
+  private api = environment.curriculumApi
 
-  public ListInitial: User[] = [];
-  public listUpdates: User[] = [];
+  public ListInitial: User[] = []
+  public listUpdates: User[] = []
 
-  private ListInitialSource = new Subject<User[]>();
-  private listUpdatesSource = new Subject<User[]>();
+  private ListInitialSource = new Subject<User[]>()
+  private listUpdatesSource = new Subject<User[]>()
 
-  ListInitial$ = this.ListInitialSource.asObservable();
-  listUpdates$ = this.listUpdatesSource.asObservable();
+  ListInitial$ = this.ListInitialSource.asObservable()
+  listUpdates$ = this.listUpdatesSource.asObservable()
 
   del(id: number) {
     this.ListInitial = this.ListInitial.filter(elementListInitial => {
-      return elementListInitial.id != id;
-    });
+      return elementListInitial.id != id
+    })
     this.ListInitialSource.next(this.ListInitial)
   }
 
   add(userSave: User) {
-    this.ListInitial.push(userSave);
+    this.ListInitial.push(userSave)
     this.ListInitialSource.next(this.ListInitial)
   }
 
   save(userSave: User) {
-    this.listUpdates = [];
-    this.listUpdates.push(userSave);
+    this.listUpdates = []
+    this.listUpdates.push(userSave)
     this.listUpdatesSource.next(this.listUpdates)
   }
 
@@ -65,25 +65,25 @@ export class UserService {
   }
 
   deleteBase(id: number): Observable<User> {
-    const url = `${this.api + '/user'}/${id}`;
+    const url = `${this.api + '/user'}/${id}`
     return this.http.delete<User>(url, httpOptions).pipe(
       tap(user => {
         this.del(id)
       }),
       catchError(this.utils.handleError<User>('deleteUser'))
-    );
+    )
   }
 
   getBasePorId(id: number): Observable<User> {
-    const url = `${this.api + '/user'}/${id}`;
+    const url = `${this.api + '/user'}/${id}`
     return this.http.get<User>(url).pipe(
       tap(user => console.log(`User found`)),
       catchError(this.utils.handleError<User>(`getBasePorId id=${id}`))
-    );
+    )
   }
 
   getBasePorEmail(email: string): Observable<User> {
-    const url = `${this.api + '/user'}/email/${email}`;
+    const url = `${this.api + '/user'}/email/${email}`
     return this.http.get<User>(url).pipe(
       tap(
         user => {
@@ -95,15 +95,15 @@ export class UserService {
         error => console.log(`Erro na função getBasePorEmail → ${error}`)
       ),
       catchError(this.utils.handleError<User>(`getBasePorEmail email=${email}`))
-    );
+    )
   }
 
   fetchCEP(cep): Observable<any> {
     console.dir(cep)
-
-    const url = `https://api.postmon.com.br/v1/cep/${cep}`
-    console.dir(url);
-    return this.http.get<any>(url).pipe(
+    // const url = `https://api.postmon.com.br/v1/cep/${cep}`
+    const url = `https://viacep.com.br/ws/${cep}/json`
+    console.dir(url)
+    return this.http.get<any>(url, { headers: null }).pipe(
       tap(
         cep => {
           console.dir(cep)
@@ -115,11 +115,11 @@ export class UserService {
         error => console.log(`Erro na função fetchCEP → ${error}`)
       ),
       catchError(this.utils.handleError<any>(`fetchCEP cep=${cep}`))
-    );
+    )
   }
 
   saveBase(user: User): Observable<User> {
-    console.dir(user)
+    if (!user['secret']) delete user['secret']
     delete user['Curriculum']
     delete user['Profile']
     if (user.id) {
@@ -134,37 +134,6 @@ export class UserService {
       )
     } else {
       return this.http.post<User>(this.api + '/user/signup', user, httpOptions).pipe(
-        tap((user: User) => {
-          console.log('User created:', user)
-          this.add(user)
-          console.log(`Added user`)
-        }),
-        catchError(this.utils.handleError<User>('addUser'))
-      )
-    }
-  }
-
-  saveBaseVacancy(vacancy): Observable<User> {
-    function buscarAvatar() {
-      
-    }
-    vacancy.userid = this.utils.getSessao('id')
-    vacancy.avatar = this.utils.getSessao('avatar') || buscarAvatar()
-    console.dir(vacancy)
-    delete vacancy['Curriculum']
-    delete vacancy['Profile']
-    if (vacancy.id) {
-      const UserId = vacancy.id
-      delete vacancy.id
-      delete vacancy['newPassword']
-      return this.http.put<User>(`${this.api}/user/${UserId}`, vacancy, httpOptions).pipe(
-        tap((user: User) => {
-          this.save(user)
-        }),
-        catchError(this.utils.handleError<User>('addUser'))
-      )
-    } else {
-      return this.http.post<User>(this.api + '/user/signup', vacancy, httpOptions).pipe(
         tap((user: User) => {
           console.log('User created:', user)
           this.add(user)

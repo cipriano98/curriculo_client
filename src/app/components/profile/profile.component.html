@@ -1,1 +1,361 @@
-<p>profile works!</p>
+<div *ngIf="loading" class="loading-page" fxLayout="row" fxLayoutAlign="center center">
+  <div class="spinner"></div>
+</div>
+<br>
+<div *ngIf=!loading mat-dialog-title fxLayout="row" fxLayoutAlign="start center">
+  PEOPLE
+  <Span>
+    &nbsp;&nbsp;&nbsp;
+    <img *ngIf="avatarURL" mat-card-avatar [src]="avatarURL">
+  </Span>
+</div>
+<!-- <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%"> -->
+
+<mat-dialog-content *ngIf=!loading>
+
+  <mat-card #Form>
+    <form class="container" novalidate>
+
+      <mat-accordion>
+
+        <mat-expansion-panel #PersonalData [formGroup]="userForm" fx #f="ngForm" [expanded]="step === 0"
+          (opened)="setStep(0)" hideToggle>
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Personal data
+            </mat-panel-title>
+            <mat-panel-description>
+              <span>Type your personal details</span>
+              <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div #PersonalDataContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+
+            <mat-form-field #linkAvatar appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <!-- TODO https://www.positronx.io/angular-8-show-image-preview-with-reactive-forms-tutorial/ -->
+              <!-- <input type="file" accept="image/*" (change)="showPreview($event)" /> -->
+              <mat-label>Link do avatar</mat-label>
+              <input matInput placeholder="Full name" formControlName="avatar" required />
+            </mat-form-field>
+
+            <mat-form-field #fullname appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Full name</mat-label>
+              <input matInput placeholder="Full name" formControlName="fullname" required />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Date birth</mat-label>
+              <input matInput [matDatepicker]="picker" (focus)="picker.open()" placeholder="yyyy/mm/dd"
+                formControlName="datebirth" readonly>
+            </mat-form-field>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <mat-form-field #email appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="email" formControlName="email"
+                (change)="verificaEmailExiste($event.target.value)" required />
+              <mat-hint class="hintError">
+                {{getFormEmailError()}}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field #preferencialname appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Preferencial name</mat-label>
+              <input matInput placeholder="Preferencial name" formControlName="preferencialname" required />
+            </mat-form-field>
+
+            <span [hidden]="!id || alterarSenha">
+              <button mat-flat-button (click)="permitirAlterarSenha()" color="primary">
+                <mat-icon>edit</mat-icon>
+                Change Password
+              </button>
+            </span>
+
+            <!-- 
+                <mat-form-field #password>
+  
+                  <mat-label>Password</mat-label>
+                  <input matInput [type]="hidePassword ? 'password' : 'text'"
+                    [placeholder]="hidePassword ? '********' : 'Password'" formControlName="secret" required>
+            
+                  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hidePassword" (keydown.enter)="hidePassword = !hidePassword">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+            
+                  <mat-error *ngIf="isFieldInvalid('secret')">
+                    Por favor informe sua senha
+                  </mat-error>
+                </mat-form-field> 
+                -->
+
+            <mat-form-field #newPassword *ngIf="alterarSenha || !id"
+              (change)="campoSenha = $event.target.value; verificaCamposSenhaIguais()" appearance="standard"
+              [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%"
+              fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label *ngIf="!id">Password</mat-label>
+              <mat-label *ngIf="alterarSenha">Password[</mat-label>
+              <input matInput type="password" formControlName="newPassword" required />
+              <mat-hint class="hintError">
+                {{getFormPasswordError()}}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field #secret *ngIf="alterarSenha || !id" appearance="standard" [floatLabel]="true"
+              [hideRequiredMarker]="false" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%"
+              fxFlex.xl="24.6%">
+              <mat-label *ngIf="!id">Retype password</mat-label>
+              <mat-label *ngIf="alterarSenha">Retype new password</mat-label>
+              <input matInput type="password" formControlName="secret"
+                (keyup)="campoRedigiteSenha = $event.target.value; verificaCamposSenhaIguais()" required />
+              <mat-error>
+                Retype your password
+              </mat-error>
+              <mat-hint *ngIf="!camposSenhaIguais" class="hintError">
+                The fields do not match
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field #nickname>
+
+              <mat-label>Nickname</mat-label>
+              <span matPrefix>@ &nbsp;</span>
+              <input matInput placeholder="FulanoJr" formControlName="nickname">
+              <mat-icon matSuffix (click)="randomNickname()">sync</mat-icon>
+
+            </mat-form-field>
+
+            <mat-action-row>
+              <button mat-button color="primary" (click)="nextStep()">Next</button>
+            </mat-action-row>
+
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel #Address [formGroup]="addressForm" fx #f="ngForm" [expanded]="step === 1"
+          (opened)="setStep(1)" hideToggle>
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Address
+            </mat-panel-title>
+            <mat-panel-description>
+              Type your address information
+              <mat-icon>map</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div #AddressContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+
+            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="nome" formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Zip code</mat-label>
+              <input matInput placeholder="cep" formControlName="cep" (change)="fetchCEP($event.target.value)" />
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>publicplace</mat-label>
+              <input matInput placeholder="logradouro" formControlName="logradouro" />
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Neighborhood/District</mat-label>
+              <input matInput placeholder="bairro" formControlName="bairro" />
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>City</mat-label>
+              <input matInput placeholder="cidade" formControlName="cidade" />
+            </mat-form-field>
+
+            <mat-form-field appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false" fxFlex.xs="100%"
+              fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>State</mat-label>
+              <input matInput placeholder="state" formControlName="state" />
+            </mat-form-field>
+
+            <mat-action-row>
+              <button mat-button color="warn" (click)="prevStep()">Previous</button>
+              <button mat-button color="primary" (click)="nextStep()">Next</button>
+            </mat-action-row>
+
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel #Contact [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 2"
+          (opened)="setStep(2)" hideToggle>
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Contact
+            </mat-panel-title>
+            <mat-panel-description>
+              Type your contact forms
+              <mat-icon>list_alt</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div #ContactContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+
+            <mat-form-field #talkto appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Talk to</mat-label>
+              <input matInput placeholder="Talk to" formControlName="talkto" />
+            </mat-form-field>
+
+            <mat-form-field #phone appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="phone" formControlName="phone" />
+            </mat-form-field>
+
+            <mat-form-field #talktotwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Talk to</mat-label>
+              <input matInput placeholder="Talk to" formControlName="talktotwo" />
+            </mat-form-field>
+            <mat-form-field #phonetwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="phonetwo" formControlName="phonetwo" />
+            </mat-form-field>
+
+            <mat-action-row>
+              <button mat-button color="warn" (click)="prevStep()">Previous</button>
+              <button mat-button color="primary" (click)="nextStep()">Next</button>
+            </mat-action-row>
+
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel #Contact [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 3"
+          (opened)="setStep(3)" hideToggle>
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Contact
+            </mat-panel-title>
+            <mat-panel-description>
+              Type your contact forms
+              <mat-icon>list_alt</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div #ContactContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+
+            <mat-form-field #talkto appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Talk to</mat-label>
+              <input matInput placeholder="Talk to" formControlName="talkto" />
+            </mat-form-field>
+
+            <mat-form-field #phone appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="phone" formControlName="phone" />
+            </mat-form-field>
+
+            <mat-form-field #talktotwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Talk to</mat-label>
+              <input matInput placeholder="Talk to" formControlName="talktotwo" />
+            </mat-form-field>
+            <mat-form-field #phonetwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="phonetwo" formControlName="phonetwo" />
+            </mat-form-field>
+
+            <mat-action-row>
+              <button mat-button color="warn" (click)="prevStep()">Previous</button>
+              <button mat-button color="primary" (click)="nextStep()">Next</button>
+            </mat-action-row>
+
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel #Contact [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 4"
+          (opened)="setStep(4)" hideToggle>
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Contact
+            </mat-panel-title>
+            <mat-panel-description>
+              Type your contact forms
+              <mat-icon>list_alt</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div #ContactContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
+
+            <mat-form-field #talkto appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Talk to</mat-label>
+              <input matInput placeholder="Talk to" formControlName="talkto" />
+            </mat-form-field>
+
+            <mat-form-field #phone appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="phone" formControlName="phone" />
+            </mat-form-field>
+
+            <mat-form-field #talktotwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Talk to</mat-label>
+              <input matInput placeholder="Talk to" formControlName="talktotwo" />
+            </mat-form-field>
+            <mat-form-field #phonetwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
+              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="phonetwo" formControlName="phonetwo" />
+            </mat-form-field>
+
+            <mat-action-row>
+              <button mat-button color="warn" (click)="prevStep()">Previous</button>
+              <button mat-button color="primary" (click)="nextStep()">End</button>
+            </mat-action-row>
+
+          </div>
+
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+    </form>
+  </mat-card>
+
+</mat-dialog-content>
+
+<br>
+<mat-dialog-actions *ngIf=!loading fxLayoutAlign="end end">
+
+  <button mat-dialog-close mat-mini-fab fxFlexOffset="10px" color="theme" matTooltip="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button [disabled]="desabilitarOnSubmit()" mat-mini-fab (click)="onSubmit()" type="submit" color="primary"
+    matTooltip="Save">
+    <mat-icon>check</mat-icon>
+  </button>
+
+</mat-dialog-actions>

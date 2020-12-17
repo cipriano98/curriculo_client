@@ -6,7 +6,7 @@ export const api = {
 };
 
 // * Define qual API será consumida
-const curriculumApi: string = api.localhost
+const curriculumApi: string = api.production
 
 // ^ Verifica se "está" em produção
 const production: boolean = curriculumApi === api.production

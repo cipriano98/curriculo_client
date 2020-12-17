@@ -15,6 +15,7 @@ export class GridComponent implements OnInit {
   public gridOptions: GridOptions
   updatingTable: boolean = false
   gridParams: CellEvent
+  userAdmin: boolean = false
 
   @Input() public entity: string
   @Input() public typeUser?: string
@@ -39,6 +40,7 @@ export class GridComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userAdmin = this.utils.getSessao('role') === 'ADMIN'
     this.gridOptions = this.buildOptions()
   }
 
@@ -56,7 +58,7 @@ export class GridComponent implements OnInit {
       },
       unSortIcon: true,
       columnDefs: [].concat(
-        this.action,
+        this.userAdmin ? this.action : [],
         this.columns
       ),
       immutableData: true,

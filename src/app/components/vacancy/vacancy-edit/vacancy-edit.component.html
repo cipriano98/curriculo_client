@@ -46,10 +46,12 @@
 
   </form>
 
-  Interested
-    <mat-list>
-      <mat-list-item (click)="openProfile(7)">item</mat-list-item>
-    </mat-list>
+<div *ngIf="interested">
+  <h2>Interested</h2>
+  <mat-list *ngFor="let user of interested">
+    <mat-list-item (click)="openProfile(user.id)">{{user.fullname}}</mat-list-item>
+  </mat-list>
+</div>
 
 </mat-dialog-content>
 

@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
   contactForm: FormGroup
   loading: boolean = false // ! Não está em uso
   alterarSenha: boolean = false
+  existUser: boolean = false
   campoSenha: string
   campoRedigiteSenha: string
   camposSenhaIguais: boolean
@@ -47,9 +48,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.userEmployer = this.utils.getSessao('role') === 'EMPLOYER'
     this.id = this.idEdicao ? this.idEdicao : this.utils.getSessao("id")
-    if(location.href.includes('/profile/')) {
+    if (location.href.includes('/profile/')) {
       const candidateId = location.href.split('/profile/')[1]
-      if(isNaN(Number(candidateId))) {
+      if (isNaN(Number(candidateId))) {
         this.utils.sendMessage('Perfil não encontrado')
         return this.router.navigate(['/'])
       }
@@ -64,8 +65,11 @@ export class ProfileComponent implements OnInit {
         .subscribe(
           data => {
             this.loading = false
-            this.atribuirDados(data, data['Address'], data['Contact'])
-            this.avatarURL = data['avatar']
+            if (data) {
+              this.existUser = true
+              this.atribuirDados(data, data['Address'], data['Contact'])
+              this.avatarURL = data['avatar']
+            }
           },
           error => {
             this.loading = false

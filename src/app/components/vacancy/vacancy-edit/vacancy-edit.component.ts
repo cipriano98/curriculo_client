@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { Router } from '@angular/router'
 import { UtilService } from 'src/app/shared/utils.service'
+import { Vacancy } from '../vacancy'
 
 import { VacancyService } from '../vacancy.service'
 
@@ -15,6 +16,7 @@ export class VacancyEditComponent implements OnInit {
 
   id: number
   vacancy: any[]
+  interested: any[]
   vacancyForm: FormGroup
   userId: number
 
@@ -46,6 +48,7 @@ export class VacancyEditComponent implements OnInit {
 
   atribuirDados(vacancy) {
     this.vacancy = vacancy
+    this.interested = vacancy['Interested']
     this.initialForm()
     this.vacancyForm.patchValue(this.vacancy)
   }

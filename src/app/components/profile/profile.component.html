@@ -2,16 +2,15 @@
   <div class="spinner"></div>
 </div>
 <br>
-<div *ngIf=!loading mat-dialog-title fxLayout="row" fxLayoutAlign="start center">
+<div *ngIf="!loading && existUser" mat-dialog-title fxLayout="row" fxLayoutAlign="start center">
   PEOPLE
   <Span>
     &nbsp;&nbsp;&nbsp;
     <img *ngIf="avatarURL" mat-card-avatar [src]="avatarURL">
   </Span>
 </div>
-<!-- <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%"> -->
 
-<mat-dialog-content *ngIf=!loading>
+<mat-dialog-content *ngIf='!loading && existUser'>
 
   <mat-card #Form>
     <form class="container" novalidate>
@@ -302,7 +301,7 @@
 </mat-dialog-content>
 
 <br>
-<mat-dialog-actions *ngIf=!loading fxLayoutAlign="end end">
+<mat-dialog-actions *ngIf="!loading && existUser" fxLayoutAlign="end end">
 
   <button mat-dialog-close mat-mini-fab fxFlexOffset="10px" color="theme" matTooltip="Close">
     <mat-icon>close</mat-icon>
@@ -313,3 +312,7 @@
   </button>
 
 </mat-dialog-actions>
+
+<div *ngIf="!loading && !existUser">
+  <h1>Perfil não encontrado</h1>
+</div>

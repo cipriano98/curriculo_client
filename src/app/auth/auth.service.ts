@@ -40,9 +40,6 @@ export class AuthService {
       .pipe(
         tap((response) => {
           delete signin.secret
-          console.dir('response');
-          alert(JSON.stringify(response));
-          console.log(`response → ${JSON.stringify(response)}`)
 
           if (response?.token) {
             localStorage.setItem('currentUser', JSON.stringify({
@@ -75,8 +72,8 @@ export class AuthService {
   register(register) {
     return this.http.post<any>(this.api + '/user/signup', register, httpOptions).pipe(
       tap((user) => {
-        console.log('201 created:', user)
-        this.utils.sendMessage('Sucesso!! Você será redirecionado para o login')
+        user = user.nickname
+        this.utils.sendMessage(`Seja bem vindo ${user}!! Você será redirecionado para o login`)
       }),
       catchError(this.utils.handleError('addUser'))
     )

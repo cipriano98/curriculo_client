@@ -91,10 +91,12 @@ export class VacancyComponent implements OnInit {
 
   shareVacancy(vacancy: Vacancy) {
     const { codeVacancy, office, name } = vacancy
-    alert(`
-Eu vi uma vaga na ${name} de ${office} e lembrei de você. Espero que consiga, boa sorte!
-Acesse: https://unique-curriculum.web.app e pesquise pelo código de vaga ${codeVacancy}
-`)
+    const message = `Eu vi uma vaga na ${name} de ${office} e lembrei de você. ` +
+      `Espero que consiga, boa sorte! Acesse: https://unique-curriculum.web.app ` +
+      `e pesquise pelo código de vaga ${codeVacancy}`
+    const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=1000,height=700,left=-1000,top=-1000`;
+    window.open(`https://api.whatsapp.com/send?text=${message}`, 'Test', params)
   }
 
   edit(vacancy) {

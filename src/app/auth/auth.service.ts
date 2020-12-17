@@ -72,8 +72,7 @@ export class AuthService {
   register(register) {
     return this.http.post<any>(this.api + '/user/signup', register, httpOptions).pipe(
       tap((user) => {
-        user = user.nickname
-        this.utils.sendMessage(`Seja bem vindo ${user}!! Você será redirecionado para o login`)
+        this.utils.sendMessage(`Seja bem vindo ${register.nickname}!! Você será redirecionado para o login`)
       }),
       catchError(this.utils.handleError('addUser'))
     )

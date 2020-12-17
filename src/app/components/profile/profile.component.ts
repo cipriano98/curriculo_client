@@ -44,7 +44,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userEmployer = this.utils.getSessao('role') === 'EMPLOYER'
-    console.dir(this.userEmployer);
     this.id = this.idEdicao ? this.idEdicao : this.utils.getSessao("id")
     this.initialForm()
 

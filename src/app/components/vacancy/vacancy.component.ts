@@ -47,8 +47,6 @@ export class VacancyComponent implements OnInit {
             })
           }]
         })
-        console.dir(interessados)
-
         interessados.forEach(vacancy => {
           if (vacancy[0].user.length > 0) {
             this.vacancyService.getBaseById(vacancy[0].codeVacancy).subscribe(vacancy => {

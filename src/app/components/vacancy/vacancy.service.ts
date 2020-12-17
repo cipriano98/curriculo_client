@@ -58,7 +58,6 @@ export class VacancyService {
       .pipe(
         tap(vacancy => {
           this.ListInitial = vacancy
-          console.dir(vacancy)
           this.ListInitialSource.next(this.ListInitial)
         }),
         catchError(this.utils.handleError('getBase', []))
@@ -83,8 +82,8 @@ export class VacancyService {
     )
   }
 
-  saveBase(vacancy: Vacancy, userId?: number): Observable<Vacancy> {
-    if (vacancy.codeVacancy) { // Se existe id, o método altera a entidade
+  saveBase(vacancy: Vacancy, userId: number): Observable<Vacancy> {
+    if (vacancy.codeVacancy > 0) { // Se existe id, o método altera a entidade
       return this.alterBase(vacancy, userId)
     } else { // Se não existe id, o método cria uma nova entidade
       return this.createBase(vacancy, userId)
@@ -95,7 +94,6 @@ export class VacancyService {
     const codeVacancy = vacancy.codeVacancy
     let url = `${this.api}/user/vacancy/${codeVacancy}`
     if (userId) url += `/connect/${userId}`
-    console.dir(url);
     delete vacancy.codeVacancy
     return this.http.put<Vacancy>(url, vacancy, httpOptions).pipe(
       tap((newVacancy) => {

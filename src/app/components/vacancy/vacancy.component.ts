@@ -40,19 +40,15 @@ export class VacancyComponent implements OnInit {
 
       if (this.candidacy) {
         const interessados = vacancies.map(vacancy => {
-          const vacancyCandidacy = [{
+          return [{
             codeVacancy: vacancy.codeVacancy,
             user: vacancy.Interested.filter(user => {
               return user.id === this.utils.getSessao('id')
             })
           }]
-          return vacancyCandidacy
-          // return vacancy.Interested.filter(user => {
-          //   return user.id === this.utils.getSessao('id')
-          // })
         })
+        console.dir(interessados)
 
-        console.dir(interessados);
         interessados.forEach(vacancy => {
           if (vacancy[0].user.length > 0) {
             this.vacancyService.getBaseById(vacancy[0].codeVacancy).subscribe(vacancy => {
@@ -60,12 +56,10 @@ export class VacancyComponent implements OnInit {
             })
           }
         })
-        console.dir('interessados')
+        console.dir('Minhas candidaturas')
         console.dir(this.vacancies)
       } else {
         this.vacancies = vacancies
-        console.dir('não interessados')
-        console.dir(this.vacancies)
       }
     })
   }

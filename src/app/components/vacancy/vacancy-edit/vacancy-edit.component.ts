@@ -15,6 +15,7 @@ export class VacancyEditComponent implements OnInit {
   id: number
   vacancy: any[]
   vacancyForm: FormGroup
+  userId: number
 
   constructor(
     public dialogRef: MatDialogRef<VacancyEditComponent>,
@@ -25,9 +26,8 @@ export class VacancyEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.userId = Number(this.utils.getSessao('id'))
     this.id = this.data.idEdicao
-    console.dir(this.data.idEdicao);
-    console.dir(this.id);
     this.initialForm()
     if (this.id !== 0) {
       this.vacancyService.getBaseById(this.id)
@@ -61,8 +61,7 @@ export class VacancyEditComponent implements OnInit {
   
   onSubmit() {
     if (this.vacancyForm.valid) {
-      console.dir(this.vacancyForm.value)
-      this.vacancyService.saveBase(this.vacancyForm.value).subscribe(() => { this.dialogRef.close() })
+      this.vacancyService.saveBase(this.vacancyForm.value, this.userId).subscribe(() => { this.dialogRef.close() })
     } else {
       this.utils.emitirErrosSubmit(this.vacancyForm)
     }

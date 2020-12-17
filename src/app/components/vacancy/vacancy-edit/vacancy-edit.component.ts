@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
+import { Router } from '@angular/router'
 import { UtilService } from 'src/app/shared/utils.service'
 
 import { VacancyService } from '../vacancy.service'
@@ -21,6 +22,7 @@ export class VacancyEditComponent implements OnInit {
     public dialogRef: MatDialogRef<VacancyEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private vacancyService: VacancyService,
+    private readonly router: Router,
     private fb: FormBuilder,
     private utils: UtilService,
   ) { }
@@ -58,7 +60,12 @@ export class VacancyEditComponent implements OnInit {
       description: [''],
     })
   }
-  
+
+  openProfile(securityKey) {
+    this.dialogRef.close()
+    this.router.navigate([`profile/${securityKey}`])
+  }
+
   onSubmit() {
     if (this.vacancyForm.valid) {
       this.vacancyService.createBase(this.vacancyForm.value, this.userId,).subscribe(() => { this.dialogRef.close() })
@@ -66,5 +73,5 @@ export class VacancyEditComponent implements OnInit {
       this.utils.emitirErrosSubmit(this.vacancyForm)
     }
   }
-  
+
 }

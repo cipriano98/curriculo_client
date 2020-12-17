@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
 import { Role } from 'src/app/shared/models/Role'
 
 import { Address } from '../../shared/models/Address'
@@ -39,12 +40,21 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
+    private readonly router: Router,
     private utils: UtilService,
   ) { }
 
   ngOnInit() {
     this.userEmployer = this.utils.getSessao('role') === 'EMPLOYER'
     this.id = this.idEdicao ? this.idEdicao : this.utils.getSessao("id")
+    if(location.href.includes('/profile/')) {
+      const candidateId = location.href.split('/profile/')[1]
+      if(isNaN(Number(candidateId))) {
+        this.utils.sendMessage('Perfil não encontrado')
+        return this.router.navigate(['/'])
+      }
+      this.id = Number(candidateId)
+    }
     this.initialForm()
 
 

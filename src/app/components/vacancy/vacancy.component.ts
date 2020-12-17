@@ -92,7 +92,6 @@ width=1000,height=700,left=-1000,top=-1000`;
   }
 
   edit(vacancy) {
-    // console.dir(vacancy)
     this.utils.openEditModal(VacancyEditComponent, vacancy)
   }
 

@@ -61,7 +61,7 @@ export class VacancyEditComponent implements OnInit {
   
   onSubmit() {
     if (this.vacancyForm.valid) {
-      this.vacancyService.saveBase(this.vacancyForm.value, this.userId).subscribe(() => { this.dialogRef.close() })
+      this.vacancyService.createBase(this.vacancyForm.value, this.userId,).subscribe(() => { this.dialogRef.close() })
     } else {
       this.utils.emitirErrosSubmit(this.vacancyForm)
     }

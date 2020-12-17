@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { UtilService } from '../../shared/utils.service';
 import { UserService } from '../user/user.service';
@@ -19,29 +19,74 @@ export class VacancyComponent implements OnInit {
     private readonly utils: UtilService
   ) { }
 
+  @Input() userId: string
+  @Input() candidacy: boolean = false
 
   sessaoId: number
   vacancyAuthor = false
   avatarDefault = 'https://www.ecp.org.br/wp-content/uploads/2017/12/default-avatar-1.png'
   vacancies: Vacancy[] = []
+  userEmployer: boolean = false
 
   ngOnInit(): void {
+    this.userEmployer = this.utils.getSessao('role') === 'EMPLOYER'
     this.sessaoId = this.utils.getSessao('id')
     this.getAllVacancies()
   }
 
   getAllVacancies() {
-    this.vacancyService.getBase().subscribe(vacancies => {
-      this.vacancies = vacancies
+    const userid = this.userId && !this.candidacy ? this.userId : null
+    this.vacancyService.getBase(userid).subscribe(vacancies => {
+
+      if (this.candidacy) {
+        const interessados = vacancies.map(vacancy => {
+          const vacancyCandidacy = [{
+            codeVacancy: vacancy.codeVacancy,
+            user: vacancy.Interested.filter(user => {
+              return user.id === this.utils.getSessao('id')
+            })
+          }]
+          return vacancyCandidacy
+          // return vacancy.Interested.filter(user => {
+          //   return user.id === this.utils.getSessao('id')
+          // })
+        })
+
+        console.dir(interessados);
+        interessados.forEach(vacancy => {
+          if (vacancy[0].user.length > 0) {
+            this.vacancyService.getBaseById(vacancy[0].codeVacancy).subscribe(vacancy => {
+              this.vacancies.push(vacancy)
+            })
+          }
+        })
+        console.dir('interessados')
+        console.dir(this.vacancies)
+      } else {
+        this.vacancies = vacancies
+        console.dir('não interessados')
+        console.dir(this.vacancies)
+      }
     })
   }
 
 
   iWant(vacancy: Vacancy) {
-    return this.vacancyService.saveBase(vacancy, this.sessaoId).subscribe(vacancy => {
-        console.dir('vacancy')
-        console.dir(vacancy)
-      })
+    if (vacancy.userid == this.sessaoId)
+      return this.utils.sendMessage('Você não pode se candidatar em uma vaga que você publicou')
+
+    const candidacyAlreadyMade = vacancy.Interested.filter(user => {
+      return user.id == this.sessaoId
+    })
+    if (candidacyAlreadyMade.length !== 0)
+      return this.utils.sendMessage('Você já se candidatou à essa vaga')
+
+    return this.vacancyService.alterBase(vacancy, this.sessaoId).subscribe(connect => {
+      if (connect) {
+        vacancy.Interested.push({ id: this.sessaoId })
+        this.utils.sendMessage('Candidatura realizada com sucesso!')
+      }
+    })
   }
 
   shareVacancy(vacancy: Vacancy) {
@@ -50,7 +95,6 @@ export class VacancyComponent implements OnInit {
 Eu vi uma vaga na ${name} de ${office} e lembrei de você. Espero que consiga, boa sorte!
 Acesse: https://unique-curriculum.web.app e pesquise pelo código de vaga ${codeVacancy}
 `)
-    console.dir(vacancy);
   }
 
   edit(vacancy) {

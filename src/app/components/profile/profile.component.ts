@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Role } from 'src/app/shared/models/Role'
 
 import { Address } from '../../shared/models/Address'
-import { Contact, } from '../../shared/models/Contact'
+import { Contact } from '../../shared/models/Contact'
 import { UtilService } from '../../shared/utils.service'
 import { User } from '../user/user'
 import { UserService } from '../user/user.service'
@@ -33,6 +34,8 @@ export class ProfileComponent implements OnInit {
   camposSenhaIguais: boolean
   step = 0
 
+  userEmployer: boolean = false
+
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
@@ -40,6 +43,8 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userEmployer = this.utils.getSessao('role') === 'EMPLOYER'
+    console.dir(this.userEmployer);
     this.id = this.idEdicao ? this.idEdicao : this.utils.getSessao("id")
     this.initialForm()
 
@@ -47,8 +52,8 @@ export class ProfileComponent implements OnInit {
     if (this.id !== 0) {
       this.loading = true
       this.userService.getBasePorId(this.id)
-      .subscribe(
-        data => {
+        .subscribe(
+          data => {
             this.loading = false
             this.atribuirDados(data, data['Address'], data['Contact'])
             this.avatarURL = data['avatar']
@@ -133,7 +138,13 @@ export class ProfileComponent implements OnInit {
     formCEP = String(formCEP)
     this.userService.fetchCEP(formCEP).subscribe(
       cep => {
-        console.dir(cep)
+        if (!cep?.erro) {
+          this.addressForm.get('cidade').setValue(cep.localidade)
+          this.addressForm.get('bairro').setValue(cep.bairro)
+          this.addressForm.get('logradouro').setValue(cep.logradouro)
+          this.addressForm.get('state').setValue(cep.uf)
+          console.dir(cep)
+        }
       }
     )
   }

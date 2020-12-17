@@ -51,11 +51,14 @@ export class VacancyService {
     this.listUpdatesSource.next(this.listUpdates)
   }
 
-  getBase(): Observable<Vacancy[]> {
-    return this.http.get<Vacancy[]>(`${this.api}/user/vacancy`)
+  getBase(userId?: string): Observable<Vacancy[]> {
+    let url = `${this.api}/user/vacancy`
+    if(userId) url += `?userId=${userId}`
+    return this.http.get<Vacancy[]>(url)
       .pipe(
         tap(vacancy => {
           this.ListInitial = vacancy
+          console.dir(vacancy)
           this.ListInitialSource.next(this.ListInitial)
         }),
         catchError(this.utils.handleError('getBase', []))
@@ -72,7 +75,7 @@ export class VacancyService {
     )
   }
 
-  getBasePorId(codeVacancy: number): Observable<Vacancy> {
+  getBaseById(codeVacancy: number): Observable<Vacancy> {
     const url = `${this.api + '/user'}/vacancy/${codeVacancy}`
     return this.http.get<Vacancy>(url).pipe(
       tap(vacancy => console.log(`Vacancy found`)),
@@ -81,23 +84,19 @@ export class VacancyService {
   }
 
   saveBase(vacancy: Vacancy, userId?: number): Observable<Vacancy> {
-    console.dir(vacancy)
     if (vacancy.codeVacancy) { // Se existe id, o método altera a entidade
-      // vacancy.userid = this.utils.getSessao('id')
       return this.alterBase(vacancy, userId)
     } else { // Se não existe id, o método cria uma nova entidade
-      delete vacancy.codeVacancy
-      return this.createBase(vacancy)
+      return this.createBase(vacancy, userId)
     }
   }
 
   alterBase(vacancy: Vacancy, userId?: number): Observable<Vacancy> {
     const codeVacancy = vacancy.codeVacancy
     let url = `${this.api}/user/vacancy/${codeVacancy}`
-    if(userId) url += `/${userId}`
+    if (userId) url += `/connect/${userId}`
+    console.dir(url);
     delete vacancy.codeVacancy
-    console.dir(userId)
-    console.dir(url)
     return this.http.put<Vacancy>(url, vacancy, httpOptions).pipe(
       tap((newVacancy) => {
         this.save(newVacancy)
@@ -106,7 +105,9 @@ export class VacancyService {
     )
   }
 
-  createBase(vacancy: Vacancy): Observable<Vacancy> {
+  createBase(vacancy: Vacancy, userId: number): Observable<Vacancy> {
+    delete vacancy.codeVacancy
+    vacancy.userid = userId
     return this.http.post<Vacancy>(this.api + '/user/vacancy', vacancy, httpOptions).pipe(
       tap((vacancy: Vacancy) => {
         this.add(vacancy)

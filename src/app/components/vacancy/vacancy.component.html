@@ -1,9 +1,27 @@
 <div *ngIf="vacancies.length" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="2.5%">
     <mat-toolbar class="transparent">
 
-        <h1>Vagas</h1>
+        <h1>Vacancies</h1>
         <span class="toll-spacer"></span>
-        <button mat-mini-fab color="primary" (click)="edit(0)">
+
+        <mat-form-field>
+            <mat-label>Company</mat-label>
+            <input matInput type="search" placeholder="Company">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nº Vacancy</mat-label>
+            <input matInput type="search" placeholder="Code vacancy">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Office</mat-label>
+            <input matInput type="search" placeholder="Office">
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        <span class="toll-spacer"></span>
+        <button *ngIf="userEmployer" mat-mini-fab color="primary" (click)="edit(0)">
             <mat-icon>add</mat-icon>
         </button>
 
@@ -33,7 +51,7 @@
                 <p>{{vacancy.description}}</p>
             </mat-card-content>
             <mat-card-actions>
-                <button mat-button (click)="iWant(vacancy)">I WANT</button>
+                <button *ngIf="!candidacy" mat-button (click)="iWant(vacancy)">I WANT</button>
                 <button mat-button (click)="shareVacancy(vacancy)">SHARE</button>
                 <button *ngIf="sessaoId === vacancy.userid" mat-button (click)="edit(vacancy.codeVacancy)">EDIT</button>
             </mat-card-actions>

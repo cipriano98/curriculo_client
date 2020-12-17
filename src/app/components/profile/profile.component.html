@@ -246,95 +246,49 @@
 
         </mat-expansion-panel>
 
-        <mat-expansion-panel #Contact [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 3"
+        <mat-expansion-panel #VacanciesCandidacy [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 3"
           (opened)="setStep(3)" hideToggle>
 
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Contact
+              Vacancy candidacy
             </mat-panel-title>
             <mat-panel-description>
-              Type your contact forms
-              <mat-icon>list_alt</mat-icon>
+              All vacancies you applied for
+              <mat-icon>work_outline</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
 
           <div #ContactContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
 
-            <mat-form-field #talkto appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Talk to</mat-label>
-              <input matInput placeholder="Talk to" formControlName="talkto" />
-            </mat-form-field>
-
-            <mat-form-field #phone appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Phone</mat-label>
-              <input matInput placeholder="phone" formControlName="phone" />
-            </mat-form-field>
-
-            <mat-form-field #talktotwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Talk to</mat-label>
-              <input matInput placeholder="Talk to" formControlName="talktotwo" />
-            </mat-form-field>
-            <mat-form-field #phonetwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Phone</mat-label>
-              <input matInput placeholder="phonetwo" formControlName="phonetwo" />
-            </mat-form-field>
-
-            <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Previous</button>
-              <button mat-button color="primary" (click)="nextStep()">Next</button>
-            </mat-action-row>
+            <app-vacancy [userId]="id" [candidacy]=true></app-vacancy>
 
           </div>
 
         </mat-expansion-panel>
 
-        <mat-expansion-panel #Contact [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 4"
+        <mat-expansion-panel #Vacancies [formGroup]="contactForm" fx #f="ngForm" [expanded]="step === 4"
           (opened)="setStep(4)" hideToggle>
 
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Contact
+              Vacancies
             </mat-panel-title>
             <mat-panel-description>
-              Type your contact forms
-              <mat-icon>list_alt</mat-icon>
+              All the vacancies you created
+              <mat-icon>work_outline</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
 
           <div #ContactContent fxLayout="column" fxLayoutAlign="center" fxLayoutGap="2.5%">
 
-            <mat-form-field #talkto appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Talk to</mat-label>
-              <input matInput placeholder="Talk to" formControlName="talkto" />
-            </mat-form-field>
+            <div *ngIf="userEmployer">
+              <app-vacancy [userId]="id"></app-vacancy>
+            </div>
 
-            <mat-form-field #phone appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Phone</mat-label>
-              <input matInput placeholder="phone" formControlName="phone" />
-            </mat-form-field>
-
-            <mat-form-field #talktotwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Talk to</mat-label>
-              <input matInput placeholder="Talk to" formControlName="talktotwo" />
-            </mat-form-field>
-            <mat-form-field #phonetwo appearance="standard" [floatLabel]="true" [hideRequiredMarker]="false"
-              fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="100%" fxFlex.lg="24.6%" fxFlex.xl="24.6%">
-              <mat-label>Phone</mat-label>
-              <input matInput placeholder="phonetwo" formControlName="phonetwo" />
-            </mat-form-field>
-
-            <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Previous</button>
-              <button mat-button color="primary" (click)="nextStep()">End</button>
-            </mat-action-row>
+            <div *ngIf="!userEmployer">
+              You are not allowed to post vacancies
+            </div>
 
           </div>
 

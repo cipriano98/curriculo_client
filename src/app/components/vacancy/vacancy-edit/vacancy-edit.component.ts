@@ -16,8 +16,6 @@ export class VacancyEditComponent implements OnInit {
   vacancy: any[]
   vacancyForm: FormGroup
 
-
-
   constructor(
     public dialogRef: MatDialogRef<VacancyEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,7 +30,7 @@ export class VacancyEditComponent implements OnInit {
     console.dir(this.id);
     this.initialForm()
     if (this.id !== 0) {
-      this.vacancyService.getBasePorId(this.id)
+      this.vacancyService.getBaseById(this.id)
         .subscribe(
           dados => {
             this.atribuirDados(dados)

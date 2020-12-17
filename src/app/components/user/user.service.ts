@@ -107,10 +107,12 @@ export class UserService {
       tap(
         cep => {
           console.dir(cep)
-          if (cep != { error: true })
+          if (!cep?.erro)
             console.log('Este cep existe e será carregado')
-          else
+          else {
             console.log(`O cep informado não foi reconhecido pelo sistema`)
+            this.utils.sendMessage('CEP não encontrado')
+          }
         },
         error => console.log(`Erro na função fetchCEP → ${error}`)
       ),

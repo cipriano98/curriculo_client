@@ -26,6 +26,7 @@ export class VacancyComponent implements OnInit {
   vacancyAuthor = false
   avatarDefault = 'https://www.ecp.org.br/wp-content/uploads/2017/12/default-avatar-1.png'
   vacancies: Vacancy[] = []
+  filterVacancies: Vacancy[] = []
   userEmployer: boolean = false
 
   ngOnInit(): void {
@@ -58,8 +59,24 @@ export class VacancyComponent implements OnInit {
         console.dir(this.vacancies)
       } else {
         this.vacancies = vacancies
+        this.filterVacancies = vacancies
       }
     })
+  }
+
+  filter(filter) {
+
+    if(!filter) return this.vacancies = this.filterVacancies
+
+    const filteredVacancies = this.filterVacancies.filter(vacancy => {
+      console.log(filter)
+      console.log(vacancy)
+      return vacancy.codeVacancy === Number(filter)
+    })
+    this.vacancies = []
+    this.vacancies = filteredVacancies
+    console.dir(filteredVacancies)
+    console.dir(this.filterVacancies)
   }
 
 

@@ -15,15 +15,15 @@ O conceito desse trabalho será baseado de acordo com as funcionalidades realiza
 
 Conceito C:
 
- - [ ] Apresentação de forma clara (para o professor);
+ - [x] Apresentação de forma clara (para o professor);
  - [x] CRUDs completos (pelo menos um por aluno) na aplicação com utilização de tabela e formulário, acessando os Web Services corretamente;
  - [x] Navegação adequada entre as páginas;
  - [x] Interface Web funcional. 
 
 Conceito B:
 
- - [ ] Realizar as tarefas para alcançar o conceito C;
- - [ ] Realizar uma funcionalidade de negócio (ou CRUD) que manipule duas entidades simultaneamente na aplicação como um todo (aplicação front-end acessando os Web Services de forma correta e adequada);
+ - [x] Realizar as tarefas para alcançar o conceito C;
+ - [x] Realizar uma funcionalidade de negócio (ou CRUD) que manipule duas entidades simultaneamente na aplicação como um todo (aplicação front-end acessando os Web Services de forma correta e adequada);
  - [x] Acesso aos Web Services de maneira adequada (trabalhando corretamente com os Padrões JavaScript ou do framework utilizado);
  - [x] Código JavaScript (ou TypeScript) adequado e modularizado;
  - [x] Utilização de um sistema de controle de versão (ex: github, bitbucket);
@@ -31,7 +31,7 @@ Conceito B:
 
 Conceito A:
 
- - [ ] Aplicação completa, realizando todas as funcionalidades do conceito B com regras de negócio e validações aplicadas corretamente;
+ - [x] Aplicação completa, realizando todas as funcionalidades do conceito B com regras de negócio e validações aplicadas corretamente;
  - [x] Interface Web adequada e responsiva (sugere-se utilizar Bootstrap ou frameworks semelhantes);
  - [x] Modelagem apropriada dos Web Services e do Mapeamento dos objetos no back-end e no front-end;
  - [x] Aplicar técnicas de segurança (ex: oauth2, JWT) na aplicação, tanto no back-end quanto no front-end.
